@@ -1,0 +1,37 @@
+<project name="IJA Projekt" basedir="." default="compile" xmlns:fx="javafx:com.sun.javafx.tools.ant">
+
+    <property name="src.dir" value="src"/>
+    <property name="dest.dir" value="dest"/>
+    <property name="doc.dir" value="doc"/>
+    <property name="build.dir" value="build"/>
+    <property name="lib.dir" location="lib"/>
+    <property name="jar.name" value="ija-app"/>
+    <property name="main_class" value="ija.Main"/>
+
+
+    <target name="clean">
+        <delete>
+            <fileset dir="${build.dir}" defaultexcludes="false">
+                <include name="**/*"/>
+            </fileset>
+        </delete>
+        <delete dir="${build.dir}/ija"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <javac srcdir="${src.dir}" destdir="${build.dir}">
+        </javac>
+        <jar destfile="${dest.dir}\${jar.name}.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main_class}"/>
+            </manifest>
+            <zipgroupfileset dir="${lib.dir}" includes="**/*.jar"/>
+        </jar>
+    </target>
+
+
+    <target name="run">
+        <java jar="${dest.dir}/${jar.name}.jar" fork="true"/>
+    </target>
+
+</project>
