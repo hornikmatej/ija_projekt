@@ -24,6 +24,7 @@ public class MainController {
 
     private List<Drawable> elements = new ArrayList<>();
     private List<TimeUpdate> updates = new ArrayList<>();
+    private Data data;
 
     private Timer timer;
     private LocalTime time = LocalTime.now();
@@ -73,6 +74,10 @@ public class MainController {
                 }
             }
         }, 0 , (long) (1000 / scale));
+    }
+
+    public void setMap(Data data){
+        this.data = data;
     }
 
 }

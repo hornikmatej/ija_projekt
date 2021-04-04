@@ -1,6 +1,8 @@
 package ija;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.util.StdConverter;
 import javafx.scene.paint.Color;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonDeserialize(converter = Vehicle.VehicleConstructorCall.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "name")
 public class Vehicle implements Drawable, TimeUpdate {
 
     private Coordinate position;
