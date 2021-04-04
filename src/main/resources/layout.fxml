@@ -13,7 +13,7 @@
          <content>
             <Group>
                <children>
-                  <Pane fx:id="content" onScroll="#onZoom" prefHeight="592.0" prefWidth="593.0" />
+                  <Pane fx:id="content" onScroll="#onZoom" prefHeight="600.0" prefWidth="600.0" />
                </children>
             </Group>
          </content>

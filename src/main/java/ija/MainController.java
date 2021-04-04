@@ -41,6 +41,7 @@ public class MainController {
         }
 
     }
+
     public void starTime(){
         timer = new Timer(false);
         timer.scheduleAtFixedRate(new TimerTask() {
