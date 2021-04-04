@@ -1,12 +1,21 @@
 package ija;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 public class Path {
     private List<Coordinate> path;
 
+    private Path(){
+    }
+
     public Path(List<Coordinate> path) {
         this.path = path;
+    }
+
+    public List<Coordinate> getPath() {
+        return path;
     }
 
     private double getDistanceBetweenCoordinates(Coordinate a, Coordinate b) {
@@ -36,6 +45,7 @@ public class Path {
         return new Coordinate(a.getX() + (b.getX() - a.getX()) * driven, a.getY() + (b.getY() - a.getY()) * driven);
     }
 
+    @JsonIgnore
     public double getPathSize() {
         double size = 0;
         for (int i = 0; i < path.size() - 1; i++){

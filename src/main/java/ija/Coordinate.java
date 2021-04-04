@@ -1,10 +1,22 @@
 package ija;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerator;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.util.Objects;
 
+
+
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Coordinate {
+    private String name;
     private double x;
     private double y;
+    private Coordinate () {
+    }
 
     public Coordinate(double x, double y) {
         this.x = x;
@@ -25,6 +37,10 @@ public class Coordinate {
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

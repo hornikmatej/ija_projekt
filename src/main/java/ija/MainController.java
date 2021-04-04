@@ -1,6 +1,8 @@
 package ija;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 
@@ -16,12 +18,31 @@ public class MainController {
     @FXML
     private Pane content;
 
+    @FXML
+    private TextField timeScale;
+
+
     private List<Drawable> elements = new ArrayList<>();
     private List<TimeUpdate> updates = new ArrayList<>();
 
     private Timer timer;
     private LocalTime time = LocalTime.now();
-
+    @FXML
+    private void  onTimeScaleChange() {
+        try {
+            float scale = Float.parseFloat(timeScale.getText());
+            if (scale <= 0){
+                Alert alert =new Alert(Alert.AlertType.ERROR, "Invalid timeScale");
+                alert.showAndWait();
+                return;
+            }
+            timer.cancel();
+            starTime(scale);
+        }catch(NumberFormatException e){
+            Alert alert =new Alert(Alert.AlertType.ERROR, "Invalid timeScale");
+            alert.showAndWait();
+        }
+    }
     @FXML
     private void onZoom(ScrollEvent event) {
         event.consume();
@@ -41,8 +62,7 @@ public class MainController {
         }
 
     }
-
-    public void starTime(){
+    public void starTime(float scale){
         timer = new Timer(false);
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -52,7 +72,7 @@ public class MainController {
                     update.update(time);
                 }
             }
-        }, 0 , 1000);
+        }, 0 , (long) (1000 / scale));
     }
 
 }
