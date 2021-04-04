@@ -1,0 +1,15 @@
+coordinates:
+- &1 name: null
+  x: 100.0
+  y: 100.0
+vehicle:
+  position: *1
+  speed: 10.0
+  path:
+    path:
+    - &2 name: null
+      x: 50.0
+      y: 50.0
+    - &3 name: null
+      x: 500.0
+      y: 50.0

@@ -1,5 +1,8 @@
 package ija;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.util.StdConverter;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
@@ -8,29 +11,42 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonDeserialize(converter = Vehicle.VehicleConstructorCall.class)
 public class Vehicle implements Drawable, TimeUpdate {
 
-    private Coordinate pos;
+    private Coordinate position;
     private double speed = 1;
     private double distance = 0;
     private Path path;
+    @JsonIgnore
     private List<Shape> gui;
 
-    public Vehicle(Coordinate pos, double speed, Path path) {
-        this.pos = pos;
+    private  Vehicle(){}
+
+    public Vehicle(Coordinate position, double speed, Path path) {
+        this.position = position;
         this.speed = speed;
         this.path = path;
-        gui = new ArrayList<>();
-        gui.add(new Circle(pos.getX(), pos.getY(), 8 , Color.BLUE));
+        setGui();
     }
 
     private void moveGui(Coordinate coordinate){
         for (Shape shape : gui) {
-            shape.setTranslateX(coordinate.getX() - pos.getX() + shape.getTranslateX());
-            shape.setTranslateY(coordinate.getY() - pos.getY() + shape.getTranslateY());
+            shape.setTranslateX(coordinate.getX() - position.getX() + shape.getTranslateX());
+            shape.setTranslateY(coordinate.getY() - position.getY() + shape.getTranslateY());
         }
     }
 
+    private void setGui(){
+        gui = new ArrayList<>();
+        gui.add(new Circle(position.getX(), position.getY(), 8 , Color.BLUE));
+    }
+
+    public Path getPath() {
+        return path;
+    }
+
+    @JsonIgnore
     @Override
     public List<Shape> getGui() {
         return gui;
@@ -40,10 +56,34 @@ public class Vehicle implements Drawable, TimeUpdate {
     public void update(LocalTime time) {
         distance += speed;
         if (distance > path.getPathSize()){
-
+            return;
         }
-        Coordinate coordinate = path.getCoordinateByDistance(distance);
-        moveGui(coordinate);
-        pos = coordinate;
+        Coordinate coords = path.getCoordinateByDistance(distance);
+        moveGui(coords);
+        position = coords;
+    }
+
+    public Coordinate getPosition() {
+        return position;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "position=" + position +
+                ", speed=" + speed +
+                '}';
+    }
+
+    static class VehicleConstructorCall extends StdConverter<Vehicle ,Vehicle>{
+        @Override
+        public Vehicle convert(Vehicle value){
+            value.setGui();
+            return value;
+        }
     }
 }
