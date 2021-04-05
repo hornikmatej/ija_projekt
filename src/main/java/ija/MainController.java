@@ -6,15 +6,27 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
+import javafx.animation.Animation;
+
 
 import java.sql.Time;
+import java.time.Instant;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.scene.control.Label;
+import java.time.Clock;
 
 public class MainController {
+
+    @FXML
+    private Label text;
 
     @FXML
     private Pane content;
@@ -32,6 +44,23 @@ public class MainController {
 
     private Timer timer;
     private LocalTime time = LocalTime.now();
+
+
+
+    @FXML
+    public void initialize() {
+
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+
+            LocalTime currentTime = LocalTime.now();
+            text.setText(currentTime.getHour() + ":" + currentTime.getMinute() + ":" + currentTime.getSecond());
+        }),
+                new KeyFrame(Duration.seconds(1))
+        );
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
+    }
+
     @FXML
     private void  onTimeScaleChange() {
         try {

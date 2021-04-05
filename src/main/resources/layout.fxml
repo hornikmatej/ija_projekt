@@ -2,13 +2,15 @@
 
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.MainController">
    <center>
       <ScrollPane onScroll="#onZoom" pannable="true" prefHeight="600.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <content>
@@ -23,8 +25,20 @@
    <right>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="timeScale" layoutX="26.0" layoutY="14.0" />
-            <Button layoutX="75.0" layoutY="49.0" mnemonicParsing="false" onAction="#onTimeScaleChange" text="Button" />
+            <TextField fx:id="timeScale" layoutX="48.0" layoutY="63.0" />
+            <Button layoutX="88.0" layoutY="95.0" mnemonicParsing="false" onAction="#onTimeScaleChange" text="Aktualizuj" />
+            <Label layoutX="53.0" layoutY="22.0" prefHeight="17.0" prefWidth="146.0" text="Zmena rýchlosti simulácie" />
+            <Label layoutX="8.0" layoutY="39.0" prefHeight="17.0" prefWidth="236.0" text="(zadaj číslo o koľko chceš simuláciu urýchliť)" />
+            <Label layoutX="112.0" layoutY="137.0" prefHeight="20.0" prefWidth="24.0" text="Čas">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="text" layoutX="93.0" layoutY="164.0" prefHeight="25.0" prefWidth="126.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children></AnchorPane>
    </right>
    <left>
