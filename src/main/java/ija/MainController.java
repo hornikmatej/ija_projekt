@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Shape;
 
 import java.sql.Time;
 import java.time.LocalTime;
@@ -20,6 +21,9 @@ public class MainController {
 
     @FXML
     private TextField timeScale;
+
+    @FXML
+    private Pane items;
 
 
     private List<Drawable> elements = new ArrayList<>();
@@ -61,8 +65,20 @@ public class MainController {
                 updates.add((TimeUpdate) drawable);
             }
         }
-
     }
+
+
+    public void printShelf(List<Shape> elements){
+        deleteLine();
+        for (Shape shape : elements){
+            items.getChildren().addAll(shape);
+        }
+    }
+
+    public void deleteLine() {
+        items.getChildren().removeAll(items.getChildren());
+    }
+
     public void starTime(float scale){
         timer = new Timer(false);
         timer.scheduleAtFixedRate(new TimerTask() {

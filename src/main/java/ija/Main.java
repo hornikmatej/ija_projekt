@@ -50,6 +50,7 @@ public class Main extends Application {
                     for (int i = 2; i < 22; i = i + 2) {
                         Shelf polica = new Shelf(rada + i, new Coordinate(115 + regal * 75, 55 + (i-2) / 2 * (sirka_police + 5)), sirka_police, dlzka_police);
                         elements.add(polica);
+                        polica.setController(controller);
                         polica.clickedOnShelf();
                         polica.getGui().get(0).setFill(Color.WHITE);
                         polica.getGui().get(0).setStroke(Color.BLACK);
@@ -60,6 +61,7 @@ public class Main extends Application {
                         Shelf polica = new Shelf(rada + i, new Coordinate(65 + regal * 75, 55 + (i) / 2 * (sirka_police + 5)), sirka_police, dlzka_police);
                         elements.add(polica);
                         polica.clickedOnShelf();
+                        polica.setController(controller);
                         polica.getGui().get(0).setFill(Color.WHITE);
                         polica.getGui().get(0).setStroke(Color.BLACK);
                     }
@@ -69,6 +71,7 @@ public class Main extends Application {
                         Shelf polica = new Shelf(rada + i, new Coordinate(115 + regal * 75, 55 + (i-2) / 2 * (sirka_police + 5)), sirka_police, dlzka_police);
                         elements.add(polica);
                         polica.clickedOnShelf();
+                        polica.setController(controller);
                         polica.getGui().get(0).setFill(Color.WHITE);
                         polica.getGui().get(0).setStroke(Color.BLACK);
                     }
@@ -76,6 +79,7 @@ public class Main extends Application {
                         Shelf polica = new Shelf(rada + i, new Coordinate(65 + regal * 75, 55 + (i) / 2 * (sirka_police + 5)), sirka_police, dlzka_police);
                         elements.add(polica);
                         polica.clickedOnShelf();
+                        polica.setController(controller);
                         polica.getGui().get(0).setFill(Color.WHITE);
                         polica.getGui().get(0).setStroke(Color.BLACK);
                     }
