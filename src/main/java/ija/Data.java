@@ -7,14 +7,23 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.List;
 
-@JsonDeserialize(converter = Vehicle.VehicleConstructorCall.class)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
 public class Data {
+    private String name;
     private List<Coordinate> coordinates;
     private Vehicle vehicle;
     private List<Street> streets;
 
     private Data() {
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Data(List<Coordinate> coordinates, Vehicle vehicle, List<Street> streets) {
@@ -35,6 +44,7 @@ public class Data {
         this.vehicle = vehicle;
     }
 
+
     public void setStreets(List<Street> streets) {
         this.streets = streets;
     }
@@ -43,9 +53,10 @@ public class Data {
         return vehicle;
     }
 
-    public List<Street>  getStreet() {
+    public List<Street> getStreets() {
         return streets;
     }
+
 
     @Override
     public String toString() {

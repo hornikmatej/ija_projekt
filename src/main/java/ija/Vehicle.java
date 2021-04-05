@@ -14,23 +14,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonDeserialize(converter = Vehicle.VehicleConstructorCall.class)
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "name")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
 public class Vehicle implements Drawable, TimeUpdate {
 
     private Coordinate position;
     private double speed = 1;
     private double distance = 0;
     private Path path;
+    private String name;
     @JsonIgnore
     private List<Shape> gui;
 
     private  Vehicle(){}
 
-    public Vehicle(Coordinate position, double speed, Path path) {
+
+
+    public Vehicle(Coordinate position, double speed, Path path, String name) {
         this.position = position;
         this.speed = speed;
         this.path = path;
+        this.name = name;
         setGui();
+    }
+
+    public void setPath(Path path) {
+        this.path = path;
+    }
+
+    public String getName() {
+        return name;
     }
 
     private void moveGui(Coordinate coordinate){
@@ -40,11 +52,16 @@ public class Vehicle implements Drawable, TimeUpdate {
         }
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private void setGui(){
         gui = new ArrayList<>();
         gui.add(new Circle(position.getX(), position.getY(), 8 , Color.BLUE));
     }
 
+    //@JsonIgnore
     public Path getPath() {
         return path;
     }

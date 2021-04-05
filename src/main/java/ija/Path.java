@@ -22,6 +22,10 @@ public class Path {
         return Math.sqrt(Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2));
     }
 
+    public void setPath(List<Coordinate> path) {
+        this.path = path;
+    }
+
     public Coordinate getCoordinateByDistance(double distance){
         double lenght = 0;
         double currentLenght = 0;
