@@ -10,13 +10,13 @@ import java.util.Objects;
 
 
 
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
 //@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-@JsonDeserialize(converter = Vehicle.VehicleConstructorCall.class)
 public class Coordinate {
-    private String name;
+    String name;
     private double x;
     private double y;
+
     private Coordinate () {
     }
 
@@ -41,7 +41,10 @@ public class Coordinate {
         this.y = y;
     }
 
-    @JsonIgnore
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

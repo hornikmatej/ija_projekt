@@ -9,8 +9,9 @@ import javafx.scene.shape.Shape;
 
 import java.util.*;
 
-@JsonDeserialize(converter = Vehicle.VehicleConstructorCall.class)
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "name")
+
+//@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "name")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
 public class Street implements  Drawable{
 
     private Street() {
@@ -19,6 +20,19 @@ public class Street implements  Drawable{
     private String name;
     private Coordinate start;
     private Coordinate end;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStart(Coordinate start) {
+        this.start = start;
+    }
+
+    public void setEnd(Coordinate end) {
+        this.end = end;
+    }
+
 
 
     public Street(String name, Coordinate start, Coordinate end) {

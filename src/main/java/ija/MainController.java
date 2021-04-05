@@ -89,7 +89,7 @@ public class MainController {
                     update.update(time);
                 }
             }
-        }, 0 , (long) (1000 / scale));
+        }, 0 , (long) (100 / scale));
     }
 
     public void setMap(Data data){
