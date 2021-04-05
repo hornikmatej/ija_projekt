@@ -4,12 +4,14 @@ package ija.store;
 
 import ija.Coordinate;
 import ija.Drawable;
+import ija.MainController;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,12 +22,17 @@ public class Shelf implements Drawable {
     private final Map<Goods, ArrayList<GoodsItem>> shelf;
     private List<Shape> gui;
     private String name;
+    private MainController mainController = null;
 
     public Shelf(String name, Coordinate pos, double height, double width) {
         this.name = name;
         this.shelf = new HashMap<>();
         gui = new ArrayList<>();
         gui.add(new Rectangle(pos.getX(), pos.getY(), width, height));
+    }
+
+    public void setController(MainController controller) {
+        mainController = controller;
     }
 
     public void put(GoodsItem goodsItem) {
@@ -72,7 +79,13 @@ public class Shelf implements Drawable {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
-                    System.out.println(name);
+                    List <Shape> items_gui = new ArrayList<>();
+                    // TODO prejst policu a vyplnit zoznam vecami
+                    Text item_name = new Text(50, 20+35, name);
+                    item_name.setStroke(Color.BLACK);
+                    items_gui.add(item_name);
+                    mainController.printShelf(items_gui);
+
                 }
             }
         });
