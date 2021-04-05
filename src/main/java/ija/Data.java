@@ -12,7 +12,7 @@ import java.util.List;
 public class Data {
     private String name;
     private List<Coordinate> coordinates;
-    private Vehicle vehicle;
+    private  List<Vehicle> vehicles;
     private List<Street> streets;
 
     private Data() {
@@ -26,10 +26,11 @@ public class Data {
         return name;
     }
 
-    public Data(List<Coordinate> coordinates, Vehicle vehicle, List<Street> streets) {
+    public Data(List<Coordinate> coordinates, List<Vehicle> vehicles, List<Street> streets) {
         this.coordinates = coordinates;
-        this.vehicle = vehicle;
+//        this.vehicle = vehicle;
         this.streets = streets;
+        this.vehicles = vehicles;
     }
 
     public List<Coordinate> getCoordinates() {
@@ -40,29 +41,29 @@ public class Data {
         this.coordinates = coordinates;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
-
 
     public void setStreets(List<Street> streets) {
         this.streets = streets;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
 
     public List<Street> getStreets() {
         return streets;
     }
 
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(List<Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
 
     @Override
     public String toString() {
         return "Data{" +
                 "coordinates=" + coordinates +
-                ", vehicle=" + vehicle +
+                ", vehicles=" + vehicles +
                 ", streets=" + streets +
                 '}';
     }

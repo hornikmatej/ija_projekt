@@ -86,19 +86,22 @@ public class Main extends Application {
         List<Coordinate> coordinates = new ArrayList<>();
         coordinates.add(new Coordinate(40,40));
 
+//        List<Street> streets = new ArrayList<>();
+//        Street vyklad = new Street("VYKLAD/NAKLAD", new Coordinate(40 , 40), new Coordinate(100, 40));
+
+//        elements.add(vyklad);
+
 
         YAMLFactory factory = new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER);
         ObjectMapper mapper = new ObjectMapper(factory);
         Data data1 = mapper.readValue(new File("test.yml"),Data.class);
-//        elements.addAll(data1.getStreet());
+
         System.out.println(data1.getCoordinates());
-        System.out.println(data1.getVehicle());
-        System.out.println(data1.getName());
-//        System.out.println(data1.getStreets());
+        System.out.println(data1.getVehicles());
 
 
         elements.addAll(data1.getStreets());
-        elements.add(data1.getVehicle());
+        elements.addAll(data1.getVehicles());
 
 
         controller.setElements(elements);
