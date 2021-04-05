@@ -17,6 +17,18 @@ public class Warehouse {
         this.vehicles = new ArrayList<>();
     }
 
+    public void setShelves(List<Shelf> shelves) {
+        this.shelves = shelves;
+    }
+
+    public void setStreets(List<Street> streets) {
+        this.streets = streets;
+    }
+
+    public void setVehicles(List<Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
+
     public List<Shelf> getShelves() {
         return shelves;
     }
