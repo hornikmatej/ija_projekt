@@ -2,9 +2,11 @@ package ija;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
@@ -42,6 +44,9 @@ public class MainController {
     @FXML
     private Label time_label;
 
+    @FXML
+    private Button clear_left_side;
+
 
     private List<Drawable> elements = new ArrayList<>();
     private List<TimeUpdate> updates = new ArrayList<>();
@@ -75,6 +80,12 @@ public class MainController {
         content.setScaleX(zoom * content.getScaleX());
         content.setScaleY(zoom * content.getScaleY());
         content.layout();
+    }
+
+    @FXML
+    private void clear_left_side()
+    {
+        deleteLine();
     }
 
     public void setElements(List<Drawable> elements) {

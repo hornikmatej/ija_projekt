@@ -23,11 +23,13 @@ public class Shelf implements Drawable {
     private List<Shape> gui;
     private String name;
     private MainController mainController = null;
+    private Coordinate pos;
 
     public Shelf(String name, Coordinate pos, double height, double width) {
         this.name = name;
         this.shelf = new HashMap<>();
         gui = new ArrayList<>();
+        this.pos = pos;
         gui.add(new Rectangle(pos.getX(), pos.getY(), width, height));
     }
 

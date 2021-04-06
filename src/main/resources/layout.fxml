@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.MainController">
    <center>
       <ScrollPane onScroll="#onZoom" pannable="true" prefHeight="600.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <content>
@@ -39,6 +39,9 @@
                   <Font size="16.0" />
                </font>
             </Label>
+            <TextField fx:id="timeScale" layoutX="26.0" layoutY="14.0" />
+            <Button layoutX="75.0" layoutY="49.0" mnemonicParsing="false" onAction="#onTimeScaleChange" text="Button" />
+            <Button layoutX="54.0" layoutY="263.0" mnemonicParsing="false" onAction="#clear_left_side" text="Clear Left Side" />
          </children></AnchorPane>
    </right>
    <left>
