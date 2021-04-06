@@ -2,6 +2,7 @@
 package ija;
 
 import javafx.application.Application;
+import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,6 +12,9 @@ import javafx.stage.Stage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import java.awt.event.WindowEvent;
+import java.beans.EventHandler;
+import javafx.application.Platform;
 
 import ija.store.*;
 import sun.nio.ch.FileChannelImpl;

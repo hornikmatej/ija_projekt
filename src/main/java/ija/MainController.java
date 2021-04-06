@@ -53,8 +53,9 @@ public class MainController {
     private Data data;
 
     private Timer timer;
-    private LocalTime time = LocalTime.of(0,00,00);
-    private LocalTime maxTime = LocalTime.of(23,59,59);
+    private LocalTime time = LocalTime.of(1,00,00);
+    private LocalTime from = LocalTime.of(1,00,00);
+    private LocalTime to = LocalTime.of(8,30,59);
 
 
     @FXML
@@ -118,6 +119,10 @@ public class MainController {
         time_label.setText(time.format(formatter));
     }
 
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
+
     public void starTime(float scale){
             timer = new Timer(false);
             timer.scheduleAtFixedRate(new TimerTask() {
@@ -132,6 +137,10 @@ public class MainController {
                         });
                     }
                     time = time.plusSeconds(30);
+                    if (time.isAfter(to))
+                        Platform.runLater(()->{
+                            time = from;
+                        });
             }
         }, 0 , (long) (100 / scale));
     }
