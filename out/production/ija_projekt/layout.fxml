@@ -29,12 +29,12 @@
             <Button layoutX="88.0" layoutY="95.0" mnemonicParsing="false" onAction="#onTimeScaleChange" text="Aktualizuj" />
             <Label layoutX="53.0" layoutY="22.0" prefHeight="17.0" prefWidth="146.0" text="Zmena rýchlosti simulácie" />
             <Label layoutX="8.0" layoutY="39.0" prefHeight="17.0" prefWidth="236.0" text="(zadaj číslo o koľko chceš simuláciu urýchliť)" />
-            <Label layoutX="112.0" layoutY="137.0" prefHeight="20.0" prefWidth="24.0" text="Čas">
+            <Label layoutX="103.0" layoutY="137.0" prefHeight="20.0" prefWidth="46.0" text="Hodiny">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="text" layoutX="93.0" layoutY="164.0" prefHeight="25.0" prefWidth="126.0">
+            <Label fx:id="time_label" layoutX="93.0" layoutY="164.0" prefHeight="25.0" prefWidth="126.0">
                <font>
                   <Font size="16.0" />
                </font>

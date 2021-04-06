@@ -10,6 +10,11 @@ import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
 import javafx.animation.Animation;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import javafx.application.Platform;
 
 
 import java.sql.Time;
@@ -26,9 +31,6 @@ import java.time.Clock;
 public class MainController {
 
     @FXML
-    private Label text;
-
-    @FXML
     private Pane content;
 
     @FXML
@@ -37,29 +39,18 @@ public class MainController {
     @FXML
     private Pane items;
 
+    @FXML
+    private Label time_label;
+
 
     private List<Drawable> elements = new ArrayList<>();
     private List<TimeUpdate> updates = new ArrayList<>();
     private Data data;
 
     private Timer timer;
-    private LocalTime time = LocalTime.now();
+    private LocalTime time = LocalTime.of(0,00,00);
+    private LocalTime maxTime = LocalTime.of(23,59,59);
 
-
-
-    @FXML
-    public void initialize() {
-
-        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-
-            LocalTime currentTime = LocalTime.now();
-            text.setText(currentTime.getHour() + ":" + currentTime.getMinute() + ":" + currentTime.getSecond());
-        }),
-                new KeyFrame(Duration.seconds(1))
-        );
-        clock.setCycleCount(Animation.INDEFINITE);
-        clock.play();
-    }
 
     @FXML
     private void  onTimeScaleChange() {
@@ -108,15 +99,28 @@ public class MainController {
         items.getChildren().removeAll(items.getChildren());
     }
 
+
+    @FXML
+    public void setLabel (LocalTime time)
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        time_label.setText(time.format(formatter));
+    }
+
     public void starTime(float scale){
-        timer = new Timer(false);
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                time = time.plusSeconds(1);
-                for (TimeUpdate update : updates){
-                    update.update(time);
-                }
+            timer = new Timer(false);
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(()->{setLabel(time);});
+
+                    for (TimeUpdate update : updates)
+                    {
+                        Platform.runLater(()->{
+                            update.update(time);
+                        });
+                    }
+                    time = time.plusSeconds(30);
             }
         }, 0 , (long) (100 / scale));
     }
