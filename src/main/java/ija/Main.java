@@ -36,7 +36,7 @@ public class Main extends Application {
         List<Drawable> elements = new ArrayList<>();
 
         Warehouse warehouse = new Warehouse(controller);
-        elements.addAll(warehouse.generateWarehouse());
+
 
         List<Coordinate> coordinates = new ArrayList<>();
         coordinates.add(new Coordinate(40, 40));
@@ -50,6 +50,12 @@ public class Main extends Application {
         YAMLFactory factory = new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER);
         ObjectMapper mapper = new ObjectMapper(factory);
         Data data1 = mapper.readValue(new File("test.yml"), Data.class);
+
+        warehouse.setStreets(data1.getStreets());
+        warehouse.setVehicles(data1.getVehicles());
+        elements.addAll(warehouse.generateWarehouse());
+        String warehousedata = "";
+        warehouse.fillWarehouse(warehousedata);
 
 
         elements.addAll(data1.getStreets());

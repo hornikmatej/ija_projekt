@@ -5,6 +5,7 @@ package ija.store;
 import ija.Coordinate;
 import ija.Drawable;
 import ija.MainController;
+import ija.Street;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -24,12 +25,14 @@ public class Shelf implements Drawable {
     private String name;
     private MainController mainController = null;
     private Coordinate pos;
+    private Street street;
 
-    public Shelf(String name, Coordinate pos, double height, double width) {
+    public Shelf(String name, Coordinate pos, double height, double width, Street street) {
         this.name = name;
         this.shelf = new HashMap<>();
         gui = new ArrayList<>();
         this.pos = pos;
+        this.street = street;
         gui.add(new Rectangle(pos.getX(), pos.getY(), width, height));
     }
 
