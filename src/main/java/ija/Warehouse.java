@@ -1,14 +1,13 @@
 package ija;
 
+import ija.store.Goods;
+import ija.store.GoodsItem;
 import ija.store.Shelf;
 import javafx.scene.paint.Color;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +22,7 @@ public class Warehouse {
     private int dlzka_police = 20;
     private MainController controller = null;
     private boolean generatedWarehouse = false;
+    private int kapacita_regalu = 5;
 
     public Warehouse(MainController controller) {
         this.controller = controller;
@@ -47,19 +47,31 @@ public class Warehouse {
             System.err.println("Nemozno naplnit sklad, ktory sa este nevygeneroval");
             System.exit(-1);
         }
-        try (CSVReader reader = new CSVReader(new FileReader(filename))) {
-            List<String[]> r = reader.readAll();
-            r.forEach(x -> System.out.println(Arrays.toString(x)));
+
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] arrOfStr = line.split(",", 2);
+                int pocet_veci = Integer.parseInt(arrOfStr[1]);
+                for (int i = 0; i < pocet_veci; i++){
+                    //najdenie prazdnej police
+                    for (Shelf polica : shelves){
+                        if (!polica.isFull()){
+                            Goods goods1 = new Goods(arrOfStr[0]);
+                            GoodsItem item = goods1.newItem(LocalDate.now());
+                            polica.put(item);
+                            break;
+                        }
+                    }
+                }
+            }
         }
-        catch(FileNotFoundException exception)
-        {
+        catch(FileNotFoundException exp){
             System.err.println("Subor nebol najdeny");
         }
         catch(IOException exception){
             System.err.println("Chyba pri citani dat");
-        }
-        catch (CsvException exception){
-            System.err.println("Chyba pri citani dat z csv suboru");
         }
     }
 
@@ -76,8 +88,9 @@ public class Warehouse {
                 }
                 if (rada == "A") {
                     for (int i = 2; i < 22; i = i + 2) {
-                        Shelf polica = new Shelf(rada + i, new Coordinate(115 + regal * 75, 55 + (i - 2) / 2 * (sirka_police + 5)), sirka_police, dlzka_police, shelf_street);
+                        Shelf polica = new Shelf(rada + i, new Coordinate(115 + regal * 75, 55 + (i - 2) / 2 * (sirka_police + 5)), sirka_police, dlzka_police, shelf_street, kapacita_regalu);
                         elements.add(polica);
+                        shelves.add(polica);
                         polica.setController(controller);
                         polica.clickedOnShelf();
                         polica.getGui().get(0).setFill(Color.WHITE);
@@ -85,8 +98,9 @@ public class Warehouse {
                     }
                 } else if (rada == "I") {
                     for (int i = 1; i < 20; i = i + 2) {
-                        Shelf polica = new Shelf(rada + i, new Coordinate(65 + regal * 75, 55 + (i) / 2 * (sirka_police + 5)), sirka_police, dlzka_police, shelf_street);
+                        Shelf polica = new Shelf(rada + i, new Coordinate(65 + regal * 75, 55 + (i) / 2 * (sirka_police + 5)), sirka_police, dlzka_police, shelf_street, kapacita_regalu);
                         elements.add(polica);
+                        shelves.add(polica);
                         polica.clickedOnShelf();
                         polica.setController(controller);
                         polica.getGui().get(0).setFill(Color.WHITE);
@@ -94,16 +108,18 @@ public class Warehouse {
                     }
                 } else {
                     for (int i = 2; i < 22; i = i + 2) {
-                        Shelf polica = new Shelf(rada + i, new Coordinate(115 + regal * 75, 55 + (i - 2) / 2 * (sirka_police + 5)), sirka_police, dlzka_police, shelf_street);
+                        Shelf polica = new Shelf(rada + i, new Coordinate(115 + regal * 75, 55 + (i - 2) / 2 * (sirka_police + 5)), sirka_police, dlzka_police, shelf_street, kapacita_regalu);
                         elements.add(polica);
+                        shelves.add(polica);
                         polica.clickedOnShelf();
                         polica.setController(controller);
                         polica.getGui().get(0).setFill(Color.WHITE);
                         polica.getGui().get(0).setStroke(Color.BLACK);
                     }
                     for (int i = 1; i < 20; i = i + 2) {
-                        Shelf polica = new Shelf(rada + i, new Coordinate(65 + regal * 75, 55 + (i) / 2 * (sirka_police + 5)), sirka_police, dlzka_police, shelf_street);
+                        Shelf polica = new Shelf(rada + i, new Coordinate(65 + regal * 75, 55 + (i) / 2 * (sirka_police + 5)), sirka_police, dlzka_police, shelf_street, kapacita_regalu);
                         elements.add(polica);
+                        shelves.add(polica);
                         polica.clickedOnShelf();
                         polica.setController(controller);
                         polica.getGui().get(0).setFill(Color.WHITE);

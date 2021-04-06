@@ -26,9 +26,13 @@ public class Shelf implements Drawable {
     private MainController mainController = null;
     private Coordinate pos;
     private Street street;
+    private int kapacita_regalu;
 
-    public Shelf(String name, Coordinate pos, double height, double width, Street street) {
+    private int zaplnenost = 0;
+
+    public Shelf(String name, Coordinate pos, double height, double width, Street street, int kap) {
         this.name = name;
+        this.kapacita_regalu = kap;
         this.shelf = new HashMap<>();
         gui = new ArrayList<>();
         this.pos = pos;
@@ -36,11 +40,32 @@ public class Shelf implements Drawable {
         gui.add(new Rectangle(pos.getX(), pos.getY(), width, height));
     }
 
+    public int getZaplnenost() {
+        return zaplnenost;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isFull(){
+        if (kapacita_regalu == zaplnenost){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
     public void setController(MainController controller) {
         mainController = controller;
     }
 
-    public void put(GoodsItem goodsItem) {
+    public boolean put(GoodsItem goodsItem) {
+        if (zaplnenost >= kapacita_regalu){
+            return false;
+        }
         Goods goods = goodsItem.goods();
         if (this.shelf.containsKey(goods)) {
             (this.shelf.get(goods)).add(goodsItem);
@@ -49,6 +74,8 @@ public class Shelf implements Drawable {
             goods_list.add(goodsItem);
             this.shelf.put(goods, goods_list);
         }
+        zaplnenost++;
+        return true;
     }
 
     public boolean containsGoods(Goods goods) {
@@ -86,9 +113,13 @@ public class Shelf implements Drawable {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
                     List <Shape> items_gui = new ArrayList<>();
                     // TODO prejst policu a vyplnit zoznam vecami
-                    Text item_name = new Text(50, 20+35, name);
-                    item_name.setStroke(Color.BLACK);
-                    items_gui.add(item_name);
+                    int y_ax = 0;
+                    for (Map.Entry<Goods, ArrayList<GoodsItem>> entry : shelf.entrySet()) {
+                        Text item_name = new Text(50, 20+35 + y_ax, entry.getKey().getName() + ", " + size(entry.getKey()));
+                        item_name.setStroke(Color.BLACK);
+                        items_gui.add(item_name);
+                        y_ax = y_ax + 10;
+                    }
                     mainController.printShelf(items_gui);
 
                 }

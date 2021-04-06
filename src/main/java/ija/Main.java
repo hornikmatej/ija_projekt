@@ -58,7 +58,7 @@ public class Main extends Application {
         warehouse.setStreets(data1.getStreets());
         warehouse.setVehicles(data1.getVehicles());
         elements.addAll(warehouse.generateWarehouse());
-        String warehousedata = "";
+        String warehousedata = "data/sklad.csv";
         warehouse.fillWarehouse(warehousedata);
 
 
