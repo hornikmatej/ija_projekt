@@ -39,6 +39,13 @@ public class Shelf implements Drawable {
         Rectangle rectangle = new Rectangle(pos.getX(), pos.getY(), width, height);
         gui.add(rectangle);
     }
+    public Shelf(Coordinate pos, double height, double width) {
+        this.shelf = new HashMap<>();
+        gui = new ArrayList<>();
+        this.pos = pos;
+        Rectangle rectangle = new Rectangle(pos.getX(), pos.getY(), width, height);
+        gui.add(rectangle);
+    }
 
     public int getZaplnenost() {
         return zaplnenost;
@@ -142,7 +149,7 @@ public class Shelf implements Drawable {
             gui.get(0).setFill(Color.rgb(255, 150, 0, 1));
         }
         else if (zaplnenost == 4){
-            gui.get(0).setFill(Color.rgb(255, 50, 0, 1));
+            gui.get(0).setFill(Color.rgb(255, 50, 0, 0.7));
         }
         else if (zaplnenost == 5){
             gui.get(0).setFill(Color.rgb(255, 0, 0, 1));

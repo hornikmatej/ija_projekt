@@ -39,6 +39,7 @@ public class Main extends Application {
 
         MainController controller = loader.getController();
         List<Drawable> elements = new ArrayList<>();
+        List<Drawable> legend = new ArrayList<>();
 
         Warehouse warehouse = new Warehouse(controller);
 
@@ -59,6 +60,7 @@ public class Main extends Application {
         warehouse.setStreets(data1.getStreets());
         warehouse.setVehicles(data1.getVehicles());
         elements.addAll(warehouse.generateWarehouse());
+        legend.addAll(warehouse.setShelfLegend());
         String warehousedata = "data/sklad.csv";
         warehouse.fillWarehouse(warehousedata);
 
@@ -68,6 +70,7 @@ public class Main extends Application {
 
 
         controller.setElements(elements);
+        controller.setShelfLegend(legend);
         controller.starTime(1);
 
         primarystage.setOnCloseRequest(e -> {

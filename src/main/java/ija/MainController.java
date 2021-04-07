@@ -1,5 +1,6 @@
 package ija;
 
+import ija.store.Shelf;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -7,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
@@ -63,16 +65,20 @@ public class MainController {
         try {
             float scale = Float.parseFloat(timeScale.getText());
             if (scale <= 0){
-                Alert alert =new Alert(Alert.AlertType.ERROR, "Invalid timeScale");
+                Alert alert =new Alert(Alert.AlertType.ERROR, "Chybná zadaná hodnota ( 0 <= zadaná hodnota <= 1000)");
                 alert.showAndWait();
                 return;
             }
             timer.cancel();
             starTime(scale);
         }catch(NumberFormatException e){
-            Alert alert =new Alert(Alert.AlertType.ERROR, "Invalid timeScale");
+            Alert alert =new Alert(Alert.AlertType.ERROR, "Chybná zadaná hodnota ( 0 <= zadaná hodnota <= 1000)");
+            alert.showAndWait();
+        }catch(IllegalArgumentException e){
+            Alert alert =new Alert(Alert.AlertType.ERROR, "Chybná zadaná hodnota ( 0 <= zadaná hodnota <= 1000)");
             alert.showAndWait();
         }
+
     }
     @FXML
     private void onZoom(ScrollEvent event) {
@@ -90,6 +96,16 @@ public class MainController {
     }
 
     public void setElements(List<Drawable> elements) {
+        this.elements = elements;
+        for (Drawable drawable : elements){
+            content.getChildren().addAll(drawable.getGui());
+            if (drawable instanceof TimeUpdate){
+                updates.add((TimeUpdate) drawable);
+            }
+        }
+    }
+
+    public void setShelfLegend(List<Drawable> elements) {
         this.elements = elements;
         for (Drawable drawable : elements){
             content.getChildren().addAll(drawable.getGui());
@@ -123,6 +139,9 @@ public class MainController {
         this.time = time;
     }
 
+
+
+    // TODO zmenit na (long) (1000 / scale)
     public void starTime(float scale){
             timer = new Timer(false);
             timer.scheduleAtFixedRate(new TimerTask() {

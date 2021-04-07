@@ -136,6 +136,22 @@ public class Warehouse {
         return null;
     }
 
+    public List<Drawable> setShelfLegend(){
+        List<Drawable> legend = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            Shelf polica = new Shelf(new Coordinate(100, 350 + i*30), 20, 20);
+            legend.add(polica);
+            if ( i == 0 ){polica.getGui().get(0).setFill(Color.WHITE);}
+            else if ( i == 1 ){polica.getGui().get(0).setFill(Color.rgb(255, 255, 150, 1));}
+            else if ( i == 2 ){polica.getGui().get(0).setFill(Color.rgb(255, 230, 0, 1));}
+            else if ( i == 3 ){polica.getGui().get(0).setFill(Color.rgb(255, 150, 0, 1));}
+            else if ( i == 4 ){polica.getGui().get(0).setFill(Color.rgb(255, 50, 0, 0.7));}
+            else if ( i == 5 ){polica.getGui().get(0).setFill(Color.rgb(255, 0, 0, 1));}
+            polica.getGui().get(0).setStroke(Color.BLACK);
+        }
+        return legend;
+    }
+
     private Street findStreet(String nameOfStreet){
         Street found = null;
         for (Street street : streets) {
