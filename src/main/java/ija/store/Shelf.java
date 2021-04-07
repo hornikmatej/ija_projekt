@@ -7,7 +7,6 @@ import ija.Drawable;
 import ija.MainController;
 import ija.Street;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -17,10 +16,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.layout.StackPane;
-
 import java.util.*;
 
+
+/**
+ * Trieda, ktorá sa zaoberá suradnicami, implementuje Drawable
+ * @version 1.0
+ * @author Filip Brna, Matej Horník
+ */
 public class Shelf implements Drawable {
     private final Map<Goods, ArrayList<GoodsItem>> shelf;
     private List<Shape> gui;
@@ -29,9 +32,18 @@ public class Shelf implements Drawable {
     private Coordinate pos;
     private Street street;
     private int kapacita_regalu;
-
     private int zaplnenost = 0;
 
+
+    /**
+     * Konstruktor nastavi suradnice nazov, suradnice, vysku, sirku, ulicu a kapacitu regalu
+     * @param name nazov regalu
+     * @param pos suradnice regalu
+     * @param height vyska regalu
+     * @param width sirka regalu
+     * @param street ulica na ktorej je regal
+     * @param kap kapacita regalu
+     */
     public Shelf(String name, Coordinate pos, double height, double width, Street street, int kap) {
         this.name = name;
         this.kapacita_regalu = kap;
@@ -46,26 +58,35 @@ public class Shelf implements Drawable {
         gui.add(rectangle);
         gui.add(text);
     }
-    public Shelf(Coordinate pos, double height, double width) {
-        this.shelf = new HashMap<>();
-        gui = new ArrayList<>();
-        this.pos = pos;
-        Rectangle rectangle = new Rectangle(pos.getX(), pos.getY(), width, height);
-        gui.add(rectangle);
-    }
 
+    /**
+     * Funkcia
+     * @return
+     */
     public Map<Goods, ArrayList<GoodsItem>> getShelf() {
         return shelf;
     }
 
+    /**
+     * Funkcia vrati aktualnu zaplnenost regalu
+     * @return int vrati aktualnu zaplnenost regalu
+     */
     public int getZaplnenost() {
         return zaplnenost;
     }
 
+    /**
+     * Funkcia vrati nazov regalu
+     * @return String vrati nazov regalu
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Funkcia zisti ci je regal plny alebo nie
+     * @return boolean vrati ci je regal plny alebo nie
+     */
     public boolean isFull(){
         if (kapacita_regalu == zaplnenost){
             return true;
@@ -75,11 +96,19 @@ public class Shelf implements Drawable {
         }
     }
 
-
+    /**
+     * Funkcia nastavi ovladac
+     * @param controller nastavi ovladac
+     */
     public void setController(MainController controller) {
         mainController = controller;
     }
 
+    /**
+     * Funkcia zisti ci bol dany produkt vlozeny do regalu alebo nie
+     * @param goodsItem typ tovaru
+     * @return boolean vrati ci bol dany produkt vlozeny do regalu alebo nie
+     */
     public boolean put(GoodsItem goodsItem) {
         if (zaplnenost >= kapacita_regalu){
             return false;
@@ -97,6 +126,11 @@ public class Shelf implements Drawable {
         return true;
     }
 
+    /**
+     * Funkcia zisti ci zoznam obsahuje tovar
+     * @param goods typ tovaru
+     * @return boolean vrati ci zoznam obsahuje tovar
+     */
     public boolean containsGoods(Goods goods) {
         List<GoodsItem> list_goods = this.shelf.get(goods);
         if (list_goods == null){
@@ -110,6 +144,11 @@ public class Shelf implements Drawable {
         return list_goods != null && !list_goods.isEmpty();
     }
 
+    /**
+     * Funkcia vymaze zo zoznamu produktov dany produkt
+     * @param goods typ produktu
+     * @return GoodsItem vrati vymazany produkt
+     */
     public GoodsItem removeAny(Goods goods) {
         List<GoodsItem> list_goods = this.shelf.get(goods);
         if (list_goods == null) {
@@ -119,12 +158,21 @@ public class Shelf implements Drawable {
         }
     }
 
+    /**
+     * Funkcia pocet produktov
+     * @param goods typ produktu
+     * @return int vrati pocet produktov
+     */
     public int size(Goods goods) {
         List<GoodsItem> list_goods = this.shelf.get(goods);
         return list_goods == null ? 0 : list_goods.size();
     }
 
 
+    /**
+     * Funkcia, ktora vyvola akciu po kliknuti na regal
+     * vypise informacie o regali na lavu stranu okna
+     */
     public void clickedOnShelf() {
         gui.get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -170,24 +218,32 @@ public class Shelf implements Drawable {
         });
     }
 
+    /**
+     * Funkcia, ktora zafarbi regali podla ich aktualnej zaplnenosti
+     */
     public void fillShelfs(){
-        if (zaplnenost == 1){
+        int percenta = zaplnenost*100/kapacita_regalu;
+        if (percenta >= 20 && percenta < 40){
             gui.get(0).setFill(Color.rgb(255, 255, 150, 1));
         }
-        else if (zaplnenost == 2){
+        else if (percenta >= 40 && percenta < 60){
             gui.get(0).setFill(Color.rgb(255, 230, 0, 1));
         }
-        else if (zaplnenost == 3){
+        else if (percenta >= 60 && percenta < 80){
             gui.get(0).setFill(Color.rgb(255, 150, 0, 1));
         }
-        else if (zaplnenost == 4){
+        else if (percenta >= 80 && percenta < 100){
             gui.get(0).setFill(Color.rgb(255, 50, 0, 0.7));
         }
-        else if (zaplnenost == 5){
+        else if (kapacita_regalu/zaplnenost == 1){
             gui.get(0).setFill(Color.rgb(255, 0, 0, 1));
         }
     }
 
+    /**
+     * Funkcia vracia GUI
+     * @return List<Shape> zoznam regalov v GUI
+     */
     @Override
     public List<Shape> getGui() {
         return gui;

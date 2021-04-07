@@ -6,12 +6,17 @@ import ija.store.Shelf;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
-
-
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 
+
+
+/**
+ * Trieda, ktorá sa zaoberá Skladom a vsetkymi vecami s nim spojenymi
+ * @version 1.0
+ * @author Filip Brna, Matej Horník
+ */
 public class Warehouse {
 
     private List<Shelf> shelves;
@@ -22,7 +27,12 @@ public class Warehouse {
     private int dlzka_police = 20;
     private MainController controller = null;
     private boolean generatedWarehouse = false;
-    private int kapacita_regalu = 5;
+    private int kapacita_regalu = 6;
+
+    /**
+     * Konstruktor pre triedu Warehouse (sklad)
+     * @param controller hlavny controller z ktoreho je tato funkcia volana
+     */
 
     public Warehouse(MainController controller) {
         this.controller = controller;
@@ -42,6 +52,10 @@ public class Warehouse {
         }};
     }
 
+    /**
+     * Funkcia, pomocou ktorej je inicializovany sklad zo suboru
+     * @param filename nazov suboru z ktoreho bude sklad inicializovany
+     */
     public void fillWarehouse(String filename){
         if (generatedWarehouse == false){
             System.err.println("Nemozno naplnit sklad, ktory sa este nevygeneroval");
@@ -75,7 +89,10 @@ public class Warehouse {
         }
     }
 
-
+    /**
+     * Funkcia vygeneruje jednotlive regali v sklade
+     * @return List<Drawable> zoznam jednotlivych elementov, ktore budu vykreslene
+     */
     public List<Drawable> generateWarehouse(){
         if (generatedWarehouse == false) {
             List<Drawable> elements = new ArrayList<>();
@@ -136,22 +153,12 @@ public class Warehouse {
         return null;
     }
 
-    public List<Drawable> setShelfLegend(){
-        List<Drawable> legend = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            Shelf polica = new Shelf(new Coordinate(100, 350 + i*30), 20, 20);
-            legend.add(polica);
-            if ( i == 0 ){polica.getGui().get(0).setFill(Color.WHITE);}
-            else if ( i == 1 ){polica.getGui().get(0).setFill(Color.rgb(255, 255, 150, 1));}
-            else if ( i == 2 ){polica.getGui().get(0).setFill(Color.rgb(255, 230, 0, 1));}
-            else if ( i == 3 ){polica.getGui().get(0).setFill(Color.rgb(255, 150, 0, 1));}
-            else if ( i == 4 ){polica.getGui().get(0).setFill(Color.rgb(255, 50, 0, 0.7));}
-            else if ( i == 5 ){polica.getGui().get(0).setFill(Color.rgb(255, 0, 0, 1));}
-            polica.getGui().get(0).setStroke(Color.BLACK);
-        }
-        return legend;
-    }
 
+    /**
+     * Funkcia prehladava ci je zadana ulica medzi definovanymi
+     * @param nameOfStreet hladana ulica
+     * @return najdenu ulicu
+     */
     private Street findStreet(String nameOfStreet){
         Street found = null;
         for (Street street : streets) {
@@ -163,6 +170,10 @@ public class Warehouse {
         return found;
     }
 
+    /**
+     * Funkcia
+     * @return
+     */
     public ObservableList<Map<String, Object>> getTableMap(){
         ObservableList<Map<String, Object>> tablemap = FXCollections.<Map<String, Object>>observableArrayList();
         Map<String, Integer> slovnik = new HashMap<>();
@@ -186,35 +197,28 @@ public class Warehouse {
         return tablemap;
     }
 
-    public void setShelves(List<Shelf> shelves) {
-        this.shelves = shelves;
-    }
-
+    /**
+     * Funkcia nastavy aktualny objekt na streets
+     * @param streets
+     */
     public void setStreets(List<Street> streets) {
         this.streets = streets;
     }
 
+    /**
+     * Funkcia nastavy aktualny objekt na vehicles
+     * @param vehicles
+     */
     public void setVehicles(List<Vehicle> vehicles) {
         this.vehicles = vehicles;
     }
 
-    public List<Shelf> getShelves() {
-        return shelves;
+    /**
+     * Funkcia pomocou ktorej zistime aku kapacitu ma regal
+     * @return int - hodnotu kapacity regalu
+     */
+    public int getKapacita_regalu() {
+        return kapacita_regalu;
     }
-
-    public List<Street> getStreets() {
-        return streets;
-    }
-
-    public List<Vehicle> getVehicles() {
-        return vehicles;
-    }
-
-    public void activate_shelves(){
-        for (Shelf shelf : shelves){
-            shelf.clickedOnShelf();
-        }
-    }
-
 
 }

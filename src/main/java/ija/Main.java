@@ -2,31 +2,30 @@
 package ija;
 
 import javafx.application.Application;
-import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
-import java.awt.event.WindowEvent;
-import java.beans.EventHandler;
 import javafx.application.Platform;
-
-import ija.store.*;
-import sun.nio.ch.FileChannelImpl;
-
-import javax.swing.tree.VariableHeightLayoutCache;
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.*;
+import java.util.List;
 
-
+/**
+ * Hlavna trieda aplikacie
+ * @version 1.0
+ * @author Filip Brna, Matej Hornik
+ */
 public class Main extends Application {
 
+    /**
+     * Funkcia volana pri starte aplikacie, nacitanie dat zo suborov (.yml,.csv)
+     * @param primarystage  hlavne okno aplikacie
+     * @throws Exception vyhodi vynimky ktore mozu nastat pocas behu aplikacie
+     */
     @Override
     public void start(Stage primarystage) throws Exception {
 
@@ -39,18 +38,12 @@ public class Main extends Application {
 
         MainController controller = loader.getController();
         List<Drawable> elements = new ArrayList<>();
-        List<Drawable> legend = new ArrayList<>();
 
         Warehouse warehouse = new Warehouse(controller);
 
 
         List<Coordinate> coordinates = new ArrayList<>();
         coordinates.add(new Coordinate(40, 40));
-
-//        List<Street> streets = new ArrayList<>();
-//        Street vyklad = new Street("VYKLAD/NAKLAD", new Coordinate(40 , 40), new Coordinate(100, 40));
-
-//        elements.add(vyklad);
 
 
         YAMLFactory factory = new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER);
@@ -60,7 +53,6 @@ public class Main extends Application {
         warehouse.setStreets(data1.getStreets());
         warehouse.setVehicles(data1.getVehicles());
         elements.addAll(warehouse.generateWarehouse());
-        legend.addAll(warehouse.setShelfLegend());
         String warehousedata = "data/sklad.csv";
         warehouse.fillWarehouse(warehousedata);
 
@@ -68,9 +60,9 @@ public class Main extends Application {
         elements.addAll(data1.getStreets());
         elements.addAll(data1.getVehicles());
 
-
+        controller.setKapacita_label(warehouse.getKapacita_regalu());
+        controller.setShelfLegend();
         controller.setElements(elements);
-        controller.setShelfLegend(legend);
         controller.starTime(1);
         controller.initTable();
         controller.updateTable(warehouse);

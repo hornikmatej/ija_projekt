@@ -1,7 +1,5 @@
 package ija;
 
-import ija.store.Shelf;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -11,23 +9,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.animation.Timeline;
-import javafx.animation.KeyFrame;
-import javafx.util.Duration;
-import javafx.animation.Animation;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
 import javafx.application.Platform;
-
-
-import java.sql.Time;
-import java.time.Instant;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.Clock;
+
+
+/**
+ * Trieda, ktorá sa zaoberá ako s GUI samotným tak aj so všetkými s ním spojenými akciami
+ * @version 1.0
+ * @author Filip Brna, Matej Horník
+ */
 
 public class MainController {
 
@@ -44,6 +36,9 @@ public class MainController {
     private Label time_label;
 
     @FXML
+    private Label kapacita_label;
+
+    @FXML
     private Button clear_left_side;
 
     @FXML
@@ -58,17 +53,18 @@ public class MainController {
     @FXML
     private TextField poziadavka;
 
-
     private List<Drawable> elements = new ArrayList<>();
     private List<TimeUpdate> updates = new ArrayList<>();
-    private Data data;
-
     private Timer timer;
     private LocalTime time = LocalTime.of(1,00,00);
     private LocalTime from = LocalTime.of(1,00,00);
     private LocalTime to = LocalTime.of(8,30,59);
 
 
+
+    /**
+     *Funkcia,
+     */
     @FXML
     private void onRequest(){
         String text = poziadavka.getText();
@@ -80,6 +76,17 @@ public class MainController {
         poziadavka.clear();
     }
 
+    /**
+     * Funkcia, ktora nastavuje Label vypisany v GUI
+     * @param kapacita Integer nasledne pretypovany na String
+     */
+    public void setKapacita_label(Integer kapacita) {
+        kapacita_label.setText(String.valueOf(kapacita));
+    }
+
+    /**
+     * Funkcia, ktorou je mozne urychlit v aplikacii čas zadanim hodnoty do textoveho pola
+     */
     @FXML
     private void  onTimeScaleChange() {
         try {
@@ -100,6 +107,10 @@ public class MainController {
         }
 
     }
+    /**
+     * Funkcia, vdaka ktorej je mozne sklad priblizovat a oddialovat
+     * @param event ScrollEvent - na zaklade koleska mysi vykonava akciu (zoom)
+     */
     @FXML
     private void onZoom(ScrollEvent event) {
         event.consume();
@@ -109,12 +120,21 @@ public class MainController {
         content.layout();
     }
 
+
+    /**
+     * Funkcia, ktora je aktivovana po stlaceni tlacitka v gui,
+     * jej ulohou je vymazat zobrazane udaje o regali.
+     */
     @FXML
     private void clear_left_side()
     {
         deleteLine();
     }
 
+    /**
+     * Funkcia
+     * @param elements List<Drawable>
+     */
     public void setElements(List<Drawable> elements) {
         this.elements = elements;
         for (Drawable drawable : elements){
@@ -125,17 +145,27 @@ public class MainController {
         }
     }
 
-    public void setShelfLegend(List<Drawable> elements) {
-        this.elements = elements;
-        for (Drawable drawable : elements){
-            content.getChildren().addAll(drawable.getGui());
-            if (drawable instanceof TimeUpdate){
-                updates.add((TimeUpdate) drawable);
-            }
+    /**
+     * Funkcia, ktora vypise legendu o zaplnenosti regalov
+     */
+    public void setShelfLegend() {
+        for (int i = 0; i < 6; i++) {
+            Rectangle rectangle = new Rectangle(100, 350 + i*30, 20, 20);
+            if ( i == 0 ){rectangle.setFill(Color.WHITE);}
+            else if ( i == 1 ){rectangle.setFill(Color.rgb(255, 255, 150, 1));}
+            else if ( i == 2 ){rectangle.setFill(Color.rgb(255, 230, 0, 1));}
+            else if ( i == 3 ){rectangle.setFill(Color.rgb(255, 150, 0, 1));}
+            else if ( i == 4 ){rectangle.setFill(Color.rgb(255, 50, 0, 0.7));}
+            else if ( i == 5 ){rectangle.setFill(Color.rgb(255, 0, 0, 1));}
+            rectangle.setStroke(Color.BLACK);
+            content.getChildren().addAll(rectangle);
         }
     }
 
-
+    /**
+     * Funkcia
+     * @param elements List<Shape>
+     */
     public void printShelf(List<Shape> elements){
         deleteLine();
         for (Shape shape : elements){
@@ -143,6 +173,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Funkcia
+     */
     public void deleteLine() {
         items.getChildren().removeAll(items.getChildren());
     }
@@ -152,6 +185,10 @@ public class MainController {
         pocet.setCellValueFactory(new MapValueFactory<>("pocet"));
     }
 
+    /**
+     * Funkcia
+     * @param warehouse Warehouse
+     */
     public void updateTable(Warehouse warehouse){
         ObservableList<Map<String, Object>> tableMap = warehouse.getTableMap();
 
@@ -159,6 +196,10 @@ public class MainController {
         skladtable.getItems().addAll(tableMap);
     }
 
+    /**
+     * Funkcia, ktora nastavuje label zobrazujuci cas v GUI
+     * @param time LocalTime aktualny cas v aplikacii
+     */
     @FXML
     public void setLabel (LocalTime time)
     {
@@ -166,13 +207,14 @@ public class MainController {
         time_label.setText(time.format(formatter));
     }
 
-    public void setTime(LocalTime time) {
-        this.time = time;
-    }
-
-
 
     // TODO zmenit na (long) (1000 / scale)
+
+    /**
+     * Funkcia, ktora nastavuje pociatocny cas v aplikacii
+     *  a kazdu sekundu ho obnovuje
+     * @param scale float - hodnota zadana uzivatelom, umoznuje urychlit cas v aplikacii
+     */
     public void starTime(float scale){
             timer = new Timer(false);
             timer.scheduleAtFixedRate(new TimerTask() {
@@ -193,10 +235,6 @@ public class MainController {
                         });
             }
         }, 0 , (long) (100 / scale));
-    }
-
-    public void setMap(Data data){
-        this.data = data;
     }
 
 }
