@@ -1,9 +1,10 @@
 package ija;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -15,7 +16,8 @@ import javafx.animation.Animation;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.*;
+
 import javafx.application.Platform;
 
 
@@ -23,11 +25,6 @@ import java.sql.Time;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import javafx.scene.control.Label;
 import java.time.Clock;
 
 public class MainController {
@@ -46,6 +43,15 @@ public class MainController {
 
     @FXML
     private Button clear_left_side;
+
+    @FXML
+    private TableView skladtable;
+
+    @FXML
+    private TableColumn<Map, String> nazov;
+
+    @FXML
+    private TableColumn<Map, Integer> pocet;
 
 
     private List<Drawable> elements = new ArrayList<>();
@@ -111,6 +117,17 @@ public class MainController {
         items.getChildren().removeAll(items.getChildren());
     }
 
+    public void initTable(){
+        nazov.setCellValueFactory(new MapValueFactory<>("nazov"));
+        pocet.setCellValueFactory(new MapValueFactory<>("pocet"));
+    }
+
+    public void updateTable(Warehouse warehouse){
+        ObservableList<Map<String, Object>> tableMap = warehouse.getTableMap();
+
+        skladtable.getItems().removeAll();
+        skladtable.getItems().addAll(tableMap);
+    }
 
     @FXML
     public void setLabel (LocalTime time)

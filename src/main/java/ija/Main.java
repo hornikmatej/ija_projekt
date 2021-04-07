@@ -68,6 +68,8 @@ public class Main extends Application {
 
         controller.setElements(elements);
         controller.starTime(1);
+        controller.initTable();
+        controller.updateTable(warehouse);
 //        mapper.writeValue(new File("test.yml"),data);
     }
 }
