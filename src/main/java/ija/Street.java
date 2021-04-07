@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 
@@ -48,6 +49,13 @@ public class Street implements  Drawable{
                 new Line(start.getX(), start.getY(), end.getX(), end.getY())
         );
     }
+//    @JsonIgnore
+//    @Override
+//    public List<StackPane> getGuis() {
+//        return Arrays.asList(
+//                new Line(start.getX(), start.getY(), end.getX(), end.getY())
+//        );
+//    }
 
     public Coordinate getStart() {
         return start;

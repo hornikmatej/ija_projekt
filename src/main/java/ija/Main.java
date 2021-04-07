@@ -33,6 +33,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout.fxml"));
         BorderPane root = loader.load();
         Scene scene = new Scene(root);
+        primarystage.setTitle("Warehouse");
         primarystage.setScene(scene);
         primarystage.show();
 
@@ -53,7 +54,7 @@ public class Main extends Application {
 
         YAMLFactory factory = new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER);
         ObjectMapper mapper = new ObjectMapper(factory);
-        Data data1 = mapper.readValue(new File("test.yml"), Data.class);
+        Data data1 = mapper.readValue(new File("data/warehouse.yml"), Data.class);
 
         warehouse.setStreets(data1.getStreets());
         warehouse.setVehicles(data1.getVehicles());
@@ -68,6 +69,11 @@ public class Main extends Application {
 
         controller.setElements(elements);
         controller.starTime(1);
+
+        primarystage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
 //        mapper.writeValue(new File("test.yml"),data);
     }
 }

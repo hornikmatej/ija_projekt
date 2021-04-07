@@ -7,17 +7,16 @@ import ija.Drawable;
 import ija.MainController;
 import ija.Street;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
+import javafx.scene.layout.StackPane;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Shelf implements Drawable {
     private final Map<Goods, ArrayList<GoodsItem>> shelf;
@@ -37,7 +36,8 @@ public class Shelf implements Drawable {
         gui = new ArrayList<>();
         this.pos = pos;
         this.street = street;
-        gui.add(new Rectangle(pos.getX(), pos.getY(), width, height));
+        Rectangle rectangle = new Rectangle(pos.getX(), pos.getY(), width, height);
+        gui.add(rectangle);
     }
 
     public int getZaplnenost() {
@@ -75,6 +75,7 @@ public class Shelf implements Drawable {
             this.shelf.put(goods, goods_list);
         }
         zaplnenost++;
+        fillShelfs();
         return true;
     }
 
@@ -114,11 +115,14 @@ public class Shelf implements Drawable {
                     List <Shape> items_gui = new ArrayList<>();
                     // TODO prejst policu a vyplnit zoznam vecami
                     int y_ax = 0;
+                    Text shelf_name = new Text(50, 25, getName()+"\nzaplnenost: "+getZaplnenost());
+                    items_gui.add(shelf_name);
+                    shelf_name.setStroke(Color.GREY);
                     for (Map.Entry<Goods, ArrayList<GoodsItem>> entry : shelf.entrySet()) {
-                        Text item_name = new Text(50, 20+35 + y_ax, entry.getKey().getName() + ", " + size(entry.getKey()));
+                        Text item_name = new Text(50, 60 + y_ax, entry.getKey().getName() + ", " + size(entry.getKey()));
                         item_name.setStroke(Color.BLACK);
                         items_gui.add(item_name);
-                        y_ax = y_ax + 10;
+                        y_ax = y_ax + 15;
                     }
                     mainController.printShelf(items_gui);
 
@@ -127,9 +131,27 @@ public class Shelf implements Drawable {
         });
     }
 
+    public void fillShelfs(){
+        if (zaplnenost == 1){
+            gui.get(0).setFill(Color.rgb(255, 255, 150, 1));
+        }
+        else if (zaplnenost == 2){
+            gui.get(0).setFill(Color.rgb(255, 230, 0, 1));
+        }
+        else if (zaplnenost == 3){
+            gui.get(0).setFill(Color.rgb(255, 150, 0, 1));
+        }
+        else if (zaplnenost == 4){
+            gui.get(0).setFill(Color.rgb(255, 50, 0, 1));
+        }
+        else if (zaplnenost == 5){
+            gui.get(0).setFill(Color.rgb(255, 0, 0, 1));
+        }
+    }
 
     @Override
     public List<Shape> getGui() {
         return gui;
     }
+
 }
