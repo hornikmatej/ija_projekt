@@ -47,6 +47,10 @@ public class Shelf implements Drawable {
         gui.add(rectangle);
     }
 
+    public Map<Goods, ArrayList<GoodsItem>> getShelf() {
+        return shelf;
+    }
+
     public int getZaplnenost() {
         return zaplnenost;
     }

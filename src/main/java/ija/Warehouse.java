@@ -3,14 +3,14 @@ package ija;
 import ija.store.Goods;
 import ija.store.GoodsItem;
 import ija.store.Shelf;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Warehouse {
 
@@ -161,6 +161,29 @@ public class Warehouse {
             }
         }
         return found;
+    }
+
+    public ObservableList<Map<String, Object>> getTableMap(){
+        ObservableList<Map<String, Object>> tablemap = FXCollections.<Map<String, Object>>observableArrayList();
+        Map<String, Integer> slovnik = new HashMap<>();
+        for (Shelf polica : shelves){
+            for(Map.Entry<Goods, ArrayList<GoodsItem>> m : polica.getShelf().entrySet()){
+                String goods_name = m.getKey().getName();
+                Integer pocet_goods = m.getValue().size();
+                if (!slovnik.containsKey(goods_name))
+                    slovnik.put(goods_name, pocet_goods);
+                else
+                    slovnik.put(goods_name, slovnik.get(goods_name) + pocet_goods);
+            }
+        }
+
+        for(Map.Entry<String, Integer> m : slovnik.entrySet()){
+            Map<String, Object> new_item = new HashMap<>();
+            new_item.put("nazov", m.getKey());
+            new_item.put("pocet" , m.getValue());
+            tablemap.add(new_item);
+        }
+        return tablemap;
     }
 
     public void setShelves(List<Shelf> shelves) {

@@ -72,11 +72,14 @@ public class Main extends Application {
         controller.setElements(elements);
         controller.setShelfLegend(legend);
         controller.starTime(1);
+        controller.initTable();
+        controller.updateTable(warehouse);
 
         primarystage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
         });
+        
 //        mapper.writeValue(new File("test.yml"),data);
     }
 }
