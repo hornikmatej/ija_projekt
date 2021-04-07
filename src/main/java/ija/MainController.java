@@ -55,6 +55,9 @@ public class MainController {
     @FXML
     private TableColumn<Map, Integer> pocet;
 
+    @FXML
+    private TextField poziadavka;
+
 
     private List<Drawable> elements = new ArrayList<>();
     private List<TimeUpdate> updates = new ArrayList<>();
@@ -65,6 +68,17 @@ public class MainController {
     private LocalTime from = LocalTime.of(1,00,00);
     private LocalTime to = LocalTime.of(8,30,59);
 
+
+    @FXML
+    private void onRequest(){
+        String text = poziadavka.getText();
+        String[] arrOfStr = text.split(";", 1000);
+        for(String vec : arrOfStr) {
+            System.out.println(vec);
+            String[] arr = vec.split(",", 2);
+        }
+        poziadavka.clear();
+    }
 
     @FXML
     private void  onTimeScaleChange() {

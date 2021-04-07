@@ -18,7 +18,7 @@
          <content>
             <Group>
                <children>
-                  <Pane fx:id="content" onScroll="#onZoom" prefHeight="600.0" prefWidth="800.0">
+                  <Pane fx:id="content" layoutX="14.0" onScroll="#onZoom" prefHeight="600.0" prefWidth="800.0">
                      <children>
                         <Label layoutX="14.0" layoutY="14.0" text="VYKLAD/NAKLAD" />
                         <Label layoutX="386.0" layoutY="14.0" text="SKLAD" />
@@ -48,7 +48,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="time_label" layoutX="93.0" layoutY="164.0" prefHeight="25.0" prefWidth="126.0">
+            <Label fx:id="time_label" alignment="CENTER" layoutX="63.0" layoutY="163.0" prefHeight="25.0" prefWidth="126.0">
                <font>
                   <Font size="16.0" />
                </font>
@@ -60,6 +60,12 @@
                 <TableColumn fx:id="pocet" editable="false" prefWidth="57.0" text="Počet" />
               </columns>
             </TableView>
+            <TextField fx:id="poziadavka" cacheShape="false" layoutX="14.0" layoutY="235.0" prefHeight="25.0" prefWidth="213.0" promptText="nazov,pocet; .. (stol,3;vaha,1)">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </TextField>
+            <Button layoutX="71.0" layoutY="266.0" mnemonicParsing="false" onAction="#onRequest" text="Zadať požiadavku" />
          </children></AnchorPane>
    </right>
    <left>

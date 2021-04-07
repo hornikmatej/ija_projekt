@@ -13,6 +13,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.layout.StackPane;
 
@@ -37,7 +40,11 @@ public class Shelf implements Drawable {
         this.pos = pos;
         this.street = street;
         Rectangle rectangle = new Rectangle(pos.getX(), pos.getY(), width, height);
+        Text text = new Text(pos.getX() + 3, pos.getY() + 14, name);
+        text.setStrokeWidth(0);
+        text.setFont(Font.font("Arial", FontWeight.NORMAL, FontPosture.REGULAR, 8.5));
         gui.add(rectangle);
+        gui.add(text);
     }
     public Shelf(Coordinate pos, double height, double width) {
         this.shelf = new HashMap<>();
@@ -120,6 +127,27 @@ public class Shelf implements Drawable {
 
     public void clickedOnShelf() {
         gui.get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton().equals(MouseButton.PRIMARY)) {
+                    List <Shape> items_gui = new ArrayList<>();
+                    // TODO prejst policu a vyplnit zoznam vecami
+                    int y_ax = 0;
+                    Text shelf_name = new Text(50, 25, getName()+"\nzaplnenost: "+getZaplnenost());
+                    items_gui.add(shelf_name);
+                    shelf_name.setStroke(Color.GREY);
+                    for (Map.Entry<Goods, ArrayList<GoodsItem>> entry : shelf.entrySet()) {
+                        Text item_name = new Text(50, 60 + y_ax, entry.getKey().getName() + ", " + size(entry.getKey()));
+                        item_name.setStroke(Color.BLACK);
+                        items_gui.add(item_name);
+                        y_ax = y_ax + 15;
+                    }
+                    mainController.printShelf(items_gui);
+
+                }
+            }
+        });
+        gui.get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
