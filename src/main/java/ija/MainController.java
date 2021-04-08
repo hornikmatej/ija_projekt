@@ -112,9 +112,11 @@ public class MainController {
                             //pridat do poziadavky
                             if (pocet_veci - pocet_goods >= 0){
                                 poziadavka.prilozitTovar(polica,goods_name,pocet_goods);
+                                polica.remove_pruduct_n(goods_name, pocet_goods);
                             }
                             else{
                                 poziadavka.prilozitTovar(polica,goods_name,pocet_veci);
+                                polica.remove_pruduct_n(goods_name, pocet_veci);
                             }
 
                             pocet_veci = pocet_veci - pocet_goods;
@@ -145,6 +147,7 @@ public class MainController {
             }
 
         }
+        this.updateTable(warehouse);
         poziadavka.clear();
     }
 
@@ -263,8 +266,9 @@ public class MainController {
      */
     public void updateTable(Warehouse warehouse){
         ObservableList<Map<String, Object>> tableMap = warehouse.getTableMap();
+        ObservableList<Map<String, Object>> empty = FXCollections.<Map<String, Object>>observableArrayList();
 
-        skladtable.getItems().removeAll();
+        skladtable.getItems().remove(0,skladtable.getItems().size());
         skladtable.getItems().addAll(tableMap);
     }
 

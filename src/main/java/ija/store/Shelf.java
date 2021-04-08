@@ -33,6 +33,7 @@ public class Shelf implements Drawable {
     private Street street;
     private int kapacita_regalu;
     private int zaplnenost = 0;
+    private Map<String, Integer> to_pick_up;
 
 
     /**
@@ -48,6 +49,7 @@ public class Shelf implements Drawable {
         this.name = name;
         this.kapacita_regalu = kap;
         this.shelf = new HashMap<>();
+        this.to_pick_up = new HashMap<>();
         gui = new ArrayList<>();
         this.pos = pos;
         this.street = street;
@@ -145,6 +147,19 @@ public class Shelf implements Drawable {
     }
 
     /**
+     * Funkcia vymaze dany tovar n krat z regalu
+     * @param goods_name nazov tovaru
+     * @param n pocet vymazani
+     */
+    public void remove_pruduct_n(String goods_name, Integer n){
+        Goods tovar = new Goods(goods_name);
+        for (int i = 0; i < n; i++){
+            this.removeAny(tovar);
+        }
+    }
+
+
+    /**
      * Funkcia vymaze zo zoznamu produktov dany produkt
      * @param goods typ produktu
      * @return GoodsItem vrati vymazany produkt
@@ -154,7 +169,17 @@ public class Shelf implements Drawable {
         if (list_goods == null) {
             return null;
         } else {
-            return list_goods.isEmpty() ? null : list_goods.remove(0);
+            GoodsItem removed =  list_goods.isEmpty() ? null : list_goods.remove(0);
+            if (list_goods.isEmpty()){
+                shelf.remove(goods);
+            }
+            if (!to_pick_up.containsKey(goods.getName()))
+                to_pick_up.put(goods.getName(), 1);
+            else
+                to_pick_up.put(goods.getName(), to_pick_up.get(goods.getName()) + 1);
+            zaplnenost--;
+            this.fillShelfs();
+            return removed;
         }
     }
 
@@ -180,16 +205,27 @@ public class Shelf implements Drawable {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
                     List <Shape> items_gui = new ArrayList<>();
                     // TODO prejst policu a vyplnit zoznam vecami
-                    int y_ax = 0;
+                    int y_ax = 60;
                     Text shelf_name = new Text(50, 25, getName()+"\nzaplnenost: "+getZaplnenost());
                     items_gui.add(shelf_name);
                     shelf_name.setStroke(Color.GREY);
                     for (Map.Entry<Goods, ArrayList<GoodsItem>> entry : shelf.entrySet()) {
-                        Text item_name = new Text(50, 60 + y_ax, entry.getKey().getName() + ", " + size(entry.getKey()));
+                        Text item_name = new Text(50, y_ax, entry.getKey().getName() + ", " + size(entry.getKey()));
                         item_name.setStroke(Color.BLACK);
                         items_gui.add(item_name);
                         y_ax = y_ax + 15;
                     }
+                    Text pick = new Text(50, y_ax + 15, "Bude vyzdvihnute");
+                    items_gui.add(pick);
+                    pick.setStroke(Color.GREY);
+                    y_ax = y_ax + 35;
+                    for (Map.Entry<String, Integer> entry : to_pick_up.entrySet()) {
+                        Text item_name = new Text(50, y_ax, entry.getKey() + ", " + entry.getValue());
+                        item_name.setStroke(Color.BLACK);
+                        items_gui.add(item_name);
+                        y_ax = y_ax + 15;
+                    }
+
                     mainController.printShelf(items_gui);
 
                 }
@@ -201,16 +237,27 @@ public class Shelf implements Drawable {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
                     List <Shape> items_gui = new ArrayList<>();
                     // TODO prejst policu a vyplnit zoznam vecami
-                    int y_ax = 0;
+                    int y_ax = 60;
                     Text shelf_name = new Text(50, 25, getName()+"\nzaplnenost: "+getZaplnenost());
                     items_gui.add(shelf_name);
                     shelf_name.setStroke(Color.GREY);
                     for (Map.Entry<Goods, ArrayList<GoodsItem>> entry : shelf.entrySet()) {
-                        Text item_name = new Text(50, 60 + y_ax, entry.getKey().getName() + ", " + size(entry.getKey()));
+                        Text item_name = new Text(50, y_ax, entry.getKey().getName() + ", " + size(entry.getKey()));
                         item_name.setStroke(Color.BLACK);
                         items_gui.add(item_name);
                         y_ax = y_ax + 15;
                     }
+                    Text pick = new Text(50, y_ax + 15, "Bude vyzdvihnute");
+                    items_gui.add(pick);
+                    pick.setStroke(Color.GREY);
+                    y_ax = y_ax + 35;
+                    for (Map.Entry<String, Integer> entry : to_pick_up.entrySet()) {
+                        Text item_name = new Text(50, y_ax, entry.getKey() + ", " + entry.getValue());
+                        item_name.setStroke(Color.BLACK);
+                        items_gui.add(item_name);
+                        y_ax = y_ax + 15;
+                    }
+
                     mainController.printShelf(items_gui);
 
                 }
@@ -235,8 +282,11 @@ public class Shelf implements Drawable {
         else if (percenta >= 80 && percenta < 100){
             gui.get(0).setFill(Color.rgb(255, 50, 0, 0.7));
         }
-        else if (kapacita_regalu/zaplnenost == 1){
+        else if (kapacita_regalu == zaplnenost){
             gui.get(0).setFill(Color.rgb(255, 0, 0, 1));
+        }
+        else{
+            gui.get(0).setFill(Color.rgb(255, 255, 255, 1));
         }
     }
 
