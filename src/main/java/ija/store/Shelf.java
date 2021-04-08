@@ -269,24 +269,27 @@ public class Shelf implements Drawable {
      * Funkcia, ktora zafarbi regali podla ich aktualnej zaplnenosti
      */
     public void fillShelfs(){
-        int percenta = zaplnenost*100/kapacita_regalu;
-        if (percenta >= 20 && percenta < 40){
+        int percenta;
+        if (zaplnenost != 0 ) {
+            percenta = zaplnenost * 100 / kapacita_regalu;
+        }
+        else{
+            percenta = 0;
+        }
+        if (percenta > 0 && percenta < 25){
             gui.get(0).setFill(Color.rgb(255, 255, 150, 1));
         }
-        else if (percenta >= 40 && percenta < 60){
+        else if (percenta >= 25 && percenta < 50){
             gui.get(0).setFill(Color.rgb(255, 230, 0, 1));
         }
-        else if (percenta >= 60 && percenta < 80){
+        else if (percenta >= 50 && percenta < 75){
             gui.get(0).setFill(Color.rgb(255, 150, 0, 1));
         }
-        else if (percenta >= 80 && percenta < 100){
+        else if (percenta >= 75 && percenta < 100){
             gui.get(0).setFill(Color.rgb(255, 50, 0, 0.7));
         }
         else if (kapacita_regalu == zaplnenost){
             gui.get(0).setFill(Color.rgb(255, 0, 0, 1));
-        }
-        else{
-            gui.get(0).setFill(Color.rgb(255, 255, 255, 1));
         }
     }
 
