@@ -291,6 +291,9 @@ public class Shelf implements Drawable {
         else if (kapacita_regalu == zaplnenost){
             gui.get(0).setFill(Color.rgb(255, 0, 0, 1));
         }
+        else {
+            gui.get(0).setFill(Color.rgb(255, 255, 255, 1));
+        }
     }
 
     /**
