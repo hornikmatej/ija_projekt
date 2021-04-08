@@ -5,6 +5,7 @@ package ija;
 import ija.store.Goods;
 import ija.store.GoodsItem;
 import ija.store.Shelf;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
