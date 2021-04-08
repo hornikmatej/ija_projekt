@@ -1,5 +1,7 @@
 package ija;
 
+import ija.store.Goods;
+import ija.store.GoodsItem;
 import ija.store.Shelf;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +25,7 @@ import java.util.*;
 import javafx.application.Platform;
 
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.sql.Time;
 import java.time.Instant;
 import java.time.LocalTime;
@@ -62,6 +65,7 @@ public class MainController {
     private List<Drawable> elements = new ArrayList<>();
     private List<TimeUpdate> updates = new ArrayList<>();
     private Data data;
+    private Warehouse warehouse;
 
     private Timer timer;
     private LocalTime time = LocalTime.of(1,00,00);
@@ -69,13 +73,72 @@ public class MainController {
     private LocalTime to = LocalTime.of(8,30,59);
 
 
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
+
     @FXML
     private void onRequest(){
+        Map<String, Integer> slovnik = this.warehouse.getMapItems();
         String text = poziadavka.getText();
         String[] arrOfStr = text.split(";", 1000);
         for(String vec : arrOfStr) {
-            System.out.println(vec);
             String[] arr = vec.split(",", 2);
+            try {
+                int pocet_veci = Integer.parseInt(arr[1]);
+                String nazov = arr[0];
+
+                if (!slovnik.containsKey(nazov)) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Tovar nebol najdeny");
+                    alert.showAndWait();
+                    return;
+                }
+                if (pocet_veci > slovnik.get(nazov)){
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Nedostatocne mnozstvo tovaru");
+                    alert.showAndWait();
+                    return;
+                }
+                Request poziadavka = new Request();
+                for (Shelf polica : warehouse.getShelves()){
+                    for(Map.Entry<Goods, ArrayList<GoodsItem>> m : polica.getShelf().entrySet()){
+                        String goods_name = m.getKey().getName();
+                        Integer pocet_goods = m.getValue().size();
+                        if (goods_name.equals(nazov)){
+                            //pridat do poziadavky
+                            if (pocet_veci - pocet_goods >= 0){
+                                poziadavka.prilozitTovar(polica,goods_name,pocet_goods);
+                            }
+                            else{
+                                poziadavka.prilozitTovar(polica,goods_name,pocet_veci);
+                            }
+
+                            pocet_veci = pocet_veci - pocet_goods;
+                            break;
+                        }
+                    }
+                    if (pocet_veci <= 0){
+                        break;
+                    }
+                }
+                //vypis poziadavku
+                // TODO optimalizovat cestu
+                for (int i = 0; i < poziadavka.getShelves().size(); i++){
+                    System.out.println(poziadavka.getShelves().get(i).getName()+" "+ poziadavka.getTovar().get(i) +" "+
+                            poziadavka.getPocet().get(i));
+                }
+
+            }
+            catch (NumberFormatException exp){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Zle zadane hodnoty");
+                alert.showAndWait();
+                return;
+            }
+            catch (ArrayIndexOutOfBoundsException exp){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Zle zadane hodnoty");
+                alert.showAndWait();
+                return;
+            }
+
         }
         poziadavka.clear();
     }

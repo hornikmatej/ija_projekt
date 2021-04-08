@@ -76,6 +76,7 @@ public class Warehouse {
     }
 
 
+
     public List<Drawable> generateWarehouse(){
         if (generatedWarehouse == false) {
             List<Drawable> elements = new ArrayList<>();
@@ -163,8 +164,7 @@ public class Warehouse {
         return found;
     }
 
-    public ObservableList<Map<String, Object>> getTableMap(){
-        ObservableList<Map<String, Object>> tablemap = FXCollections.<Map<String, Object>>observableArrayList();
+    public Map<String, Integer> getMapItems(){
         Map<String, Integer> slovnik = new HashMap<>();
         for (Shelf polica : shelves){
             for(Map.Entry<Goods, ArrayList<GoodsItem>> m : polica.getShelf().entrySet()){
@@ -176,6 +176,12 @@ public class Warehouse {
                     slovnik.put(goods_name, slovnik.get(goods_name) + pocet_goods);
             }
         }
+        return slovnik;
+    }
+
+    public ObservableList<Map<String, Object>> getTableMap(){
+        ObservableList<Map<String, Object>> tablemap = FXCollections.<Map<String, Object>>observableArrayList();
+        Map<String, Integer> slovnik = getMapItems();
 
         for(Map.Entry<String, Integer> m : slovnik.entrySet()){
             Map<String, Object> new_item = new HashMap<>();
