@@ -28,4 +28,6 @@ hs_err_pid*
 # ant subory
 .ant*
 
+# buildovacie priecinky
 /build
+/out

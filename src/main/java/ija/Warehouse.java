@@ -52,6 +52,10 @@ public class Warehouse {
         }};
     }
 
+    public List<Shelf> getShelves() {
+        return shelves;
+    }
+
     /**
      * Funkcia, pomocou ktorej je inicializovany sklad zo suboru
      * @param filename nazov suboru z ktoreho bude sklad inicializovany
@@ -174,8 +178,7 @@ public class Warehouse {
      * Funkcia
      * @return
      */
-    public ObservableList<Map<String, Object>> getTableMap(){
-        ObservableList<Map<String, Object>> tablemap = FXCollections.<Map<String, Object>>observableArrayList();
+    public Map<String, Integer> getMapItems(){
         Map<String, Integer> slovnik = new HashMap<>();
         for (Shelf polica : shelves){
             for(Map.Entry<Goods, ArrayList<GoodsItem>> m : polica.getShelf().entrySet()){
@@ -187,6 +190,12 @@ public class Warehouse {
                     slovnik.put(goods_name, slovnik.get(goods_name) + pocet_goods);
             }
         }
+        return slovnik;
+    }
+
+    public ObservableList<Map<String, Object>> getTableMap(){
+        ObservableList<Map<String, Object>> tablemap = FXCollections.<Map<String, Object>>observableArrayList();
+        Map<String, Integer> slovnik = getMapItems();
 
         for(Map.Entry<String, Integer> m : slovnik.entrySet()){
             Map<String, Object> new_item = new HashMap<>();

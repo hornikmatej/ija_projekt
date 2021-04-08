@@ -40,7 +40,7 @@ public class Main extends Application {
         List<Drawable> elements = new ArrayList<>();
 
         Warehouse warehouse = new Warehouse(controller);
-
+        controller.setWarehouse(warehouse);
 
         List<Coordinate> coordinates = new ArrayList<>();
         coordinates.add(new Coordinate(40, 40));
