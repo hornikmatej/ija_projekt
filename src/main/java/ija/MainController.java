@@ -1,9 +1,10 @@
 package ija;
 
+
+
 import ija.store.Goods;
 import ija.store.GoodsItem;
 import ija.store.Shelf;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -24,13 +25,6 @@ import java.time.LocalTime;
  * @version 1.0
  * @author Filip Brna, Matej Horník
  */
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
-import java.sql.Time;
-import java.time.Instant;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.Clock;
-
 public class MainController {
 
     @FXML
@@ -261,6 +255,7 @@ public class MainController {
      * Funkcia
      * @param warehouse Warehouse
      */
+    @SuppressWarnings("unchecked")
     public void updateTable(Warehouse warehouse){
         ObservableList<Map<String, Object>> tableMap = warehouse.getTableMap();
 

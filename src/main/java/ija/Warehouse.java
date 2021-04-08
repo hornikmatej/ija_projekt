@@ -27,7 +27,7 @@ public class Warehouse {
     private int dlzka_police = 20;
     private MainController controller = null;
     private boolean generatedWarehouse = false;
-    private int kapacita_regalu = 6;
+    private int kapacita_regalu = 5;
 
     /**
      * Konstruktor pre triedu Warehouse (sklad)

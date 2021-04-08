@@ -3,6 +3,12 @@ package ija;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.util.StdConverter;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 import java.util.*;
@@ -14,6 +20,7 @@ import java.util.*;
  * @version 1.0
  * @author Filip Brna, Matej Hornik
  */
+@JsonDeserialize(converter = Street.StreetConstructor.class)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
 public class Street implements  Drawable{
 
@@ -26,7 +33,11 @@ public class Street implements  Drawable{
     private String name;
     private Coordinate start;
     private Coordinate end;
+    private boolean closed;
 
+
+    @JsonIgnore
+    private List<Shape> gui;
     /**
      * Fukncia nastavi nazov jednotlivej ulicky skladu
      * @param name nastavi nazov jednotlivej ulicky skladu
@@ -51,17 +62,36 @@ public class Street implements  Drawable{
         this.end = end;
     }
 
-
     /**
      * Konstruktor pre ulicu skladu
      * @param name nazov ulice
      * @param start suradnice zaciatku ulice
      * @param end suradnice konca ulice
+     * @param closed ak je dana ulica skladu uzavreta (true), otvorena (false)
      */
-    public Street(String name, Coordinate start, Coordinate end) {
+    public Street(String name, Coordinate start, Coordinate end, boolean closed) {
         this.name = name;
         this.start = start;
         this.end = end;
+        this.closed = closed;
+        setGui();
+    }
+
+    /**
+     * Funkcia nastavuje GUI
+     */
+    public void setGui(){
+        gui = new ArrayList<>();
+        gui.add(new Line(this.start.getX(), this.start.getY(), this.end.getX(), this.end.getY()));
+        gui.get(0).setStroke(Color.DARKSLATEBLUE);
+        gui.get(0).setStrokeWidth(1.5);
+    }
+    /**
+     * Funkcia vracia True ak je ulicka uzavreta, False ak je otvorena
+     * @return boolean vracia True ak je ulicka uzavreta, False ak je otvorena
+     */
+    public boolean isClosed() {
+        return closed;
     }
 
     /**
@@ -71,9 +101,7 @@ public class Street implements  Drawable{
     @JsonIgnore
     @Override
     public List<Shape> getGui() {
-        return Arrays.asList(
-                new Line(start.getX(), start.getY(), end.getX(), end.getY())
-        );
+        return this.gui;
     }
 
     /**
@@ -98,5 +126,44 @@ public class Street implements  Drawable{
      */
     public String getName() {
         return name;
+    }
+
+
+    /**
+     * Funkcia volana po kliknuti na ulicku v sklade, pokial je mozne ju uzavriet tak ju uzavrie
+     */
+    public void clickedOnStreet()
+    {
+        //TODO realne uzatvorit ulicku, nie iba zafarbit
+        gui.get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton().equals(MouseButton.PRIMARY)) {
+                    if( !name.equals("VYKLAD/NAKLAD") && !name.equals("HIGHWAY UP") && !name.equals("HIGHWAY DOWN")) {
+                        gui.get(0).setStroke(Color.DARKRED);
+                        gui.get(0).setStrokeWidth(2.5);
+                    }
+                } else if (event.getButton().equals(MouseButton.SECONDARY)) {
+                    if( !name.equals("VYKLAD/NAKLAD") && !name.equals("HIGHWAY UP") && !name.equals("HIGHWAY DOWN")) {
+                        closed = true;
+                        gui.get(0).setStroke(Color.DARKSLATEBLUE);
+                        gui.get(0).setStrokeWidth(1.5);
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Funkcia
+     * @return VehicleConstructorCall
+     */
+    static class StreetConstructor extends StdConverter<Street, Street> {
+        @Override
+        public Street convert(Street value) {
+            value.setGui();
+            value.clickedOnStreet();
+            return value;
+        }
     }
 }
