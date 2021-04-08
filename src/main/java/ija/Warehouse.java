@@ -84,6 +84,7 @@ public class Warehouse {
                     }
                 }
             }
+
         }
         catch(FileNotFoundException exp){
             System.err.println("Subor nebol najdeny");
