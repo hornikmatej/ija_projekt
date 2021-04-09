@@ -31,7 +31,6 @@
                 <include name="/*"/>
             </fileset>
         </delete>
-
     </target>
 
     <target name="compile" depends="clean">
@@ -53,6 +52,7 @@
     <target name="clean-doc">
         <delete>
             <fileset dir="${doc.dir}" defaultexcludes="false">
+                <exclude name = "architektura.pdf" />
                 <include name="**/*"/>
             </fileset>
         </delete>
