@@ -300,7 +300,7 @@ public class MainController {
                             update.update(time);
                         });
                     }
-                    time = time.plusSeconds(30);
+                    time = time.plusSeconds(1);
                     if (time.isAfter(to))
                         Platform.runLater(()->{
                             time = from;

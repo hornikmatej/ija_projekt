@@ -8,7 +8,7 @@ vehicles:
     &2 name: null
     x: 40.1
     y: 40
-  speed: 1.0
+  speed: 3.0
   path:
     path:
       - &3 name: null
@@ -28,7 +28,7 @@ vehicles:
     &29 name: null
     x: 40.1
     y: 40
-  speed: 1.0
+  speed: 3.0
   path:
     path:
       - &33 name: null
