@@ -331,7 +331,7 @@ public class MainController {
                             time = from;
                         });
             }
-        }, 0 , (long) (10 / scale));
+        }, 0 , (long) (1000 / scale));
     }
 
 }

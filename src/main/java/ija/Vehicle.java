@@ -193,7 +193,7 @@ public class Vehicle implements Drawable, TimeUpdate {
                     items_gui.add(shelf_name);
                     shelf_name.setStroke(Color.GREY);
                     for (int i = 0; i < poziadavka.getShelves().size(); i++) {
-                        Text item_name = new Text(50, y_ax, poziadavka.getTovar().get(i) + ", " + poziadavka.getPocet().get(i));
+                        Text item_name = new Text(50, y_ax, poziadavka.getShelves().get(i).getName() + ": " + poziadavka.getTovar().get(i) + ", " + poziadavka.getPocet().get(i));
                         item_name.setStroke(Color.BLACK);
                         items_gui.add(item_name);
                         y_ax = y_ax + 15;
