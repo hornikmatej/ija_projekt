@@ -43,6 +43,8 @@ public class MainController {
     @FXML
     private Label kapacita_label;
 
+    @FXML Label voziky;
+
     @FXML
     private Button clear_left_side;
 
@@ -71,16 +73,21 @@ public class MainController {
 
 
     /**
-     *Funkcia,
+     *Funkcia nastavi warehouse
      */
     public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
     }
 
+
+    /**
+     *Funkcia vykona poziadavku zadanu cez aplikaciu
+     */
     @FXML
     private void onRequest(){
         Map<String, Integer> slovnik = this.warehouse.getMapItems();
         String text = poziadavka.getText();
+        Request poz = new Request();
         String[] arrOfStr = text.split(";", 1000);
         for(String vec : arrOfStr) {
             String[] arr = vec.split(",", 2);
@@ -98,7 +105,6 @@ public class MainController {
                     alert.showAndWait();
                     return;
                 }
-                Request poziadavka = new Request();
                 for (Shelf polica : warehouse.getShelves()){
                     for(Map.Entry<Goods, ArrayList<GoodsItem>> m : polica.getShelf().entrySet()){
                         String goods_name = m.getKey().getName();
@@ -106,11 +112,11 @@ public class MainController {
                         if (goods_name.equals(nazov)){
                             //pridat do poziadavky
                             if (pocet_veci - pocet_goods >= 0){
-                                poziadavka.prilozitTovar(polica,goods_name,pocet_goods);
+                                poz.prilozitTovar(polica,goods_name,pocet_goods);
                                 polica.remove_pruduct_n(goods_name, pocet_goods);
                             }
                             else{
-                                poziadavka.prilozitTovar(polica,goods_name,pocet_veci);
+                                poz.prilozitTovar(polica,goods_name,pocet_veci);
                                 polica.remove_pruduct_n(goods_name, pocet_veci);
                             }
 
@@ -124,9 +130,10 @@ public class MainController {
                 }
                 //vypis poziadavku
                 // TODO optimalizovat cestu
-                for (int i = 0; i < poziadavka.getShelves().size(); i++){
-                    System.out.println(poziadavka.getShelves().get(i).getName()+" "+ poziadavka.getTovar().get(i) +" "+
-                            poziadavka.getPocet().get(i));
+
+                for (int i = 0; i < poz.getShelves().size(); i++){
+                    System.out.println(poz.getShelves().get(i).getName()+" "+ poz.getTovar().get(i) +" "+
+                            poz.getPocet().get(i));
                 }
 
             }
@@ -142,6 +149,7 @@ public class MainController {
             }
 
         }
+        warehouse.appendRequest(poz);
         this.updateTable(warehouse);
         poziadavka.clear();
     }
@@ -152,6 +160,10 @@ public class MainController {
      */
     public void setKapacita_label(Integer kapacita) {
         kapacita_label.setText(String.valueOf(kapacita));
+    }
+
+    public void setPocet_vozikov(Integer pocet){
+        voziky.setText(String.valueOf(pocet));
     }
 
     /**
@@ -250,13 +262,17 @@ public class MainController {
         items.getChildren().removeAll(items.getChildren());
     }
 
+
+    /**
+     * Funkcia ktora inicializuje tabulku na pravej strane
+     */
     public void initTable(){
         nazov.setCellValueFactory(new MapValueFactory<>("nazov"));
         pocet.setCellValueFactory(new MapValueFactory<>("pocet"));
     }
 
     /**
-     * Funkcia
+     * Funkcia nacita do tabulky veci
      * @param warehouse Warehouse
      */
     @SuppressWarnings("unchecked")
@@ -293,6 +309,15 @@ public class MainController {
                 @Override
                 public void run() {
                     Platform.runLater(()->{setLabel(time);});
+                    if (!warehouse.getPoziadavky().isEmpty()){
+                        for (Vehicle auto : warehouse.getVehicles()){
+
+                            if (!auto.isWorking()){
+                                warehouse.createPath(auto);
+                                break;
+                            }
+                        }
+                    }
 
                     for (TimeUpdate update : updates)
                     {

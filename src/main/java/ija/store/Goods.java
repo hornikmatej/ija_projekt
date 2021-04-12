@@ -85,7 +85,7 @@ public class Goods {
     }
 
     /**
-     * Funkcia
+     * Funkcia porovnava objekt s objektom
      * @param o
      * @return boolean
      */
@@ -98,8 +98,8 @@ public class Goods {
     }
 
     /**
-     * Funkcia
-     * @return int
+     * Funkcia hashujuca tento objekt
+     * @return int hash objektu
      */
     @Override
     public int hashCode() {

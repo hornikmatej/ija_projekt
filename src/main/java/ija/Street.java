@@ -24,17 +24,16 @@ import java.util.*;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
 public class Street implements  Drawable{
 
+    private String name;
+    private Coordinate start;
+    private Coordinate end;
+    private boolean closed = false;
+
     /**
      * Prazdny konstruktor potrebny pre deserializaciu suboru YML
      */
     private Street() {
     }
-
-    private String name;
-    private Coordinate start;
-    private Coordinate end;
-    private boolean closed;
-
 
     @JsonIgnore
     private List<Shape> gui;
@@ -142,10 +141,11 @@ public class Street implements  Drawable{
                     if( !name.equals("VYKLAD/NAKLAD") && !name.equals("HIGHWAY UP") && !name.equals("HIGHWAY DOWN")) {
                         gui.get(0).setStroke(Color.DARKRED);
                         gui.get(0).setStrokeWidth(2.5);
+                        closed = true;
                     }
                 } else if (event.getButton().equals(MouseButton.SECONDARY)) {
                     if( !name.equals("VYKLAD/NAKLAD") && !name.equals("HIGHWAY UP") && !name.equals("HIGHWAY DOWN")) {
-                        closed = true;
+                        closed = false;
                         gui.get(0).setStroke(Color.DARKSLATEBLUE);
                         gui.get(0).setStrokeWidth(1.5);
                     }
