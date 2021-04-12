@@ -17,12 +17,9 @@ vehicles:
       - &4 name: null
         x: 175.0
         y: 40.0
-      - &50 name: null
-        x: 175.0
-        y: 40.0
       - &40 name: null
         x: 175.0
-        y: 240.0
+        y: 290.0
 - &21 name: "dorime"
   position:
     &29 name: null
