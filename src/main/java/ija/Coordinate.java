@@ -81,8 +81,8 @@ public class Coordinate {
     }
 
     /**
-     * Funkcia
-     * @param o
+     * Funkcia porovna objekt s tymto objektom
+     * @param o objekt
      * @return boolean
      */
     @Override
@@ -93,8 +93,8 @@ public class Coordinate {
         return Double.compare(that.x, x) == 0 && Double.compare(that.y, y) == 0;
     }
     /**
-     * Funkcia
-     * @return int
+     * Funkcia vypocita hash objektu
+     * @return int hash objektu
      */
     @Override
     public int hashCode() {

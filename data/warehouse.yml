@@ -3,43 +3,28 @@ coordinates:
   x: 40.0
   y: 40.0
 vehicles:
-- &20 name: "ameno"
+- &100 name: "auto1"
   position:
-    &2 name: null
-    x: 40.1
+    &500 name: null
+    x: 40
     y: 40
   speed: 1.0
   path:
     path:
-      - &3 name: null
-        x: 80.0
-        y: 40.0
-      - &4 name: null
-        x: 175.0
-        y: 40.0
-      - &50 name: null
-        x: 175.0
-        y: 40.0
-      - &40 name: null
-        x: 175.0
-        y: 240.0
-- &21 name: "dorime"
-  position:
-    &29 name: null
-    x: 40.1
-    y: 40
-  speed: 1.0
-  path:
-    path:
-      - &33 name: null
+      - &1000 name: null
         x: 40.0
         y: 40.0
-      - &44 name: null
-        x: 550.0
+- &101 name: "auto2"
+  position:
+    &501 name: null
+    x: 40
+    y: 40
+  speed: 1.0
+  path:
+    path:
+      - &1001 name: null
+        x: 40.0
         y: 40.0
-      - &34 name: null
-        x: 550.0
-        y: 75.0
 streets:
 - &5 name: "VYKLAD/NAKLAD"
   start:

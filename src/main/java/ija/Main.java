@@ -61,6 +61,7 @@ public class Main extends Application {
         elements.addAll(data1.getVehicles());
 
         controller.setKapacita_label(warehouse.getKapacita_regalu());
+        controller.setPocet_vozikov(data1.getVehicles().size());
         controller.setShelfLegend();
         controller.setElements(elements);
         controller.starTime(1);

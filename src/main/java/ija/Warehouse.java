@@ -23,6 +23,7 @@ public class Warehouse {
     private List<Street> streets;
     private List<Vehicle> vehicles;
     private List<String> rady;
+    private List<Request> poziadavky;
     private int sirka_police = 20;
     private int dlzka_police = 20;
     private MainController controller = null;
@@ -39,6 +40,7 @@ public class Warehouse {
         this.shelves = new ArrayList<>();
         this.streets = new ArrayList<>();
         this.vehicles = new ArrayList<>();
+        this.poziadavky = new ArrayList<>();
         rady = new ArrayList<String>(){{
             add("A");
             add("B");
@@ -52,9 +54,131 @@ public class Warehouse {
         }};
     }
 
+    /**
+     * Funckia vracia list s poziadavkami ktore sa maju vykonat
+     * @return List<Request> vracia list s poziadavkami
+     */
+    public List<Request> getPoziadavky() {
+        return poziadavky;
+    }
+
+    /**
+     * Funckia prida poziadavku do zoznamu poziadaviek
+     * @param req poziadavka
+     */
+    public void appendRequest(Request req){
+        this.poziadavky.add(req);
+    }
+
+
+    /**
+     * Funckia vrati vozidla v sklade
+     * @return List<Vehicle> list vozdiel
+     */
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    /**
+     * Funkcia vrati list polic v sklade
+     * @return List<Shelf> zoznam policiek
+     */
     public List<Shelf> getShelves() {
         return shelves;
     }
+
+    /**
+     * Funckia vytvori cestu ktorou pojde vozidlo pre veci v sklade
+     * @param auto vozdilo v sklade
+     */
+    public void createPath (Vehicle auto){
+        Request poz = poziadavky.remove(0);
+        List<Coordinate> coordinates = new ArrayList<>();
+        Coordinate start = null;
+        Coordinate start_vyklad = null, end_vyklad = null;
+        //najdenie pociatocnej cesty
+        for (Street ulica : this.streets){
+            if (ulica.getName().equals("VYKLAD/NAKLAD")){
+                coordinates.add(start_vyklad = new Coordinate(ulica.getStart().getX(), ulica.getStart().getY()));
+                coordinates.add(end_vyklad = new Coordinate(ulica.getEnd().getX(), ulica.getEnd().getY()));
+            } else if (ulica.getName().equals("HIGHWAY DOWN")){
+                start = new Coordinate(ulica.getStart().getX(), ulica.getStart().getY());
+            }
+        }
+        double x = poz.getShelves().get(0).getStreet().getStart().getX();
+        double y = poz.getShelves().get(0).getStreet().getStart().getY();
+        coordinates.add(new Coordinate(x, y));
+        Shelf prev_street = null;
+        for (int i = 0; i < poz.getShelves().size(); i++) {
+            if (prev_street != null){
+                if (!prev_street.getStreet().equals(poz.getShelves().get(i).getStreet())){
+                    double new_x = prev_street.getStreet().getStart().getX();
+                    double new_y = prev_street.getStreet().getStart().getY();
+                    coordinates.add(new Coordinate(new_x,new_y));
+
+                    double new1_x = poz.getShelves().get(i).getStreet().getStart().getX();
+                    double new1_y = poz.getShelves().get(i).getStreet().getStart().getY();
+                    coordinates.add(new Coordinate(new1_x,new1_y));
+                }
+            }
+            prev_street = poz.getShelves().get(i);
+            String shelfname = poz.getShelves().get(i).getName().substring(1);
+            double x_shelf = poz.getShelves().get(i).getStreet().getStart().getX(), y_shelf = 0;
+            switch (shelfname) {
+                case "1":
+                case "2":
+                    y_shelf = 65;
+                    break;
+                case "3":
+                case "4":
+                    y_shelf = 91;
+                    break;
+                case "5":
+                case "6":
+                    y_shelf = 117;
+                    break;
+                case "7":
+                case "8":
+                    y_shelf = 142;
+                    break;
+                case "9":
+                case "10":
+                    y_shelf = 166;
+                    break;
+                case "11":
+                case "12":
+                    y_shelf = 191;
+                    break;
+                case "13":
+                case "14":
+                    y_shelf = 215;
+                    break;
+                case "15":
+                case "16":
+                    y_shelf = 240;
+                    break;
+                case "17":
+                case "18":
+                    y_shelf = 267;
+                    break;
+                case "19":
+                case "20":
+                    y_shelf = 290;
+                    break;
+            }
+            coordinates.add(new Coordinate(x_shelf, y_shelf));
+        }
+        //cesta domov
+        coordinates.add(new Coordinate(prev_street.getStreet().getEnd().getX(), prev_street.getStreet().getEnd().getY()));
+        coordinates.add(start);
+        coordinates.add(end_vyklad);
+        coordinates.add(start_vyklad);
+        
+        auto.setPath(new Path(coordinates));
+        auto.setPoziadavka(poz);
+    }
+
+
 
     /**
      * Funkcia, pomocou ktorej je inicializovany sklad zo suboru
@@ -176,8 +300,8 @@ public class Warehouse {
     }
 
     /**
-     * Funkcia
-     * @return
+     * Funkcia funckia vrati slovnik s polozkami v sklade
+     * @return Mapu s vecami v sklade a ich poctom
      */
     public Map<String, Integer> getMapItems(){
         Map<String, Integer> slovnik = new HashMap<>();
@@ -194,6 +318,10 @@ public class Warehouse {
         return slovnik;
     }
 
+    /**
+     * Funckia vytvori mapu potrebnu pre vypisanie tabulky v gui
+     * @return Mapa veci v sklade
+     */
     public ObservableList<Map<String, Object>> getTableMap(){
         ObservableList<Map<String, Object>> tablemap = FXCollections.<Map<String, Object>>observableArrayList();
         Map<String, Integer> slovnik = getMapItems();
@@ -221,6 +349,10 @@ public class Warehouse {
      */
     public void setVehicles(List<Vehicle> vehicles) {
         this.vehicles = vehicles;
+        for (Vehicle auto : this.vehicles){
+            auto.setController(this.controller);
+            auto.clickedOnVehicle();
+        }
     }
 
     /**

@@ -62,7 +62,15 @@ public class Shelf implements Drawable {
     }
 
     /**
-     * Funkcia
+     * Funkcia vrati poziciu regalu
+     * @return pozicia regalu
+     */
+    public Coordinate getPos() {
+        return pos;
+    }
+
+    /**
+     * Funkcia vrati policu v podobe mapy
      * @return
      */
     public Map<Goods, ArrayList<GoodsItem>> getShelf() {
@@ -96,6 +104,14 @@ public class Shelf implements Drawable {
         else{
             return false;
         }
+    }
+
+    /**
+     * Funkcia vrati uulicu na ktorej sa nachadza regal
+     * @return street ulica kde je regal
+     */
+    public Street getStreet() {
+        return street;
     }
 
     /**
@@ -193,6 +209,10 @@ public class Shelf implements Drawable {
         return list_goods == null ? 0 : list_goods.size();
     }
 
+    public void removePickUp(String tovar){
+        this.to_pick_up.remove(tovar);
+    }
+
 
     /**
      * Funkcia, ktora vyvola akciu po kliknuti na regal
@@ -204,7 +224,6 @@ public class Shelf implements Drawable {
             public void handle(MouseEvent event) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
                     List <Shape> items_gui = new ArrayList<>();
-                    // TODO prejst policu a vyplnit zoznam vecami
                     int y_ax = 60;
                     Text shelf_name = new Text(50, 25, getName()+"\nzaplnenost: "+getZaplnenost());
                     items_gui.add(shelf_name);
@@ -236,7 +255,6 @@ public class Shelf implements Drawable {
             public void handle(MouseEvent event) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
                     List <Shape> items_gui = new ArrayList<>();
-                    // TODO prejst policu a vyplnit zoznam vecami
                     int y_ax = 60;
                     Text shelf_name = new Text(50, 25, getName()+"\nzaplnenost: "+getZaplnenost());
                     items_gui.add(shelf_name);
