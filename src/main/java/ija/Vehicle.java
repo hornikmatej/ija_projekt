@@ -154,7 +154,7 @@ public class Vehicle implements Drawable, TimeUpdate {
             Shelf polica = poziadavka.getShelves().get(i);
             //blizko police ?
             double vzd = Math.sqrt(Math.pow(coords.getX() - polica.getPos().getX(), 2) + Math.pow(coords.getY() - polica.getPos().getY(), 2));
-            if (vzd <= 15.3){
+            if (vzd <= 35.9){
                 //vymazem prvok s police
                 polica.removePickUp(poziadavka.getTovar().get(i));
             }
