@@ -13,6 +13,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 
@@ -198,6 +199,22 @@ public class Vehicle implements Drawable, TimeUpdate {
                         items_gui.add(item_name);
                         y_ax = y_ax + 15;
                     }
+                    //zvyraznenie cesty
+                    List<Shape> cesta = new ArrayList<>();
+                    List<Coordinate> zoznam_coor = path.getPath();
+                    for (int i = 0; i < zoznam_coor.size() - 1; i++){
+                        Line line = new Line();
+                        line.setStartX(zoznam_coor.get(i).getX());
+                        line.setStartY(zoznam_coor.get(i).getY());
+                        line.setEndX(zoznam_coor.get(i + 1).getX());
+                        line.setEndY(zoznam_coor.get(i + 1).getY());
+                        line.setStroke(Color.BLUE);
+                        line.setStrokeWidth(3);
+                        line.setFill(Color.BLUE);
+                        cesta.add(line);
+                    }
+                    controller.showPath(cesta);
+
                     controller.printShelf(items_gui);
 
                 }

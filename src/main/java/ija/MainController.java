@@ -61,6 +61,7 @@ public class MainController {
     private TextField poziadavka;
 
     private List<Drawable> elements = new ArrayList<>();
+    private List<Shape> cesta_voziku = new ArrayList<>();
     private List<TimeUpdate> updates = new ArrayList<>();
     private Data data;
     private Warehouse warehouse;
@@ -162,6 +163,30 @@ public class MainController {
         kapacita_label.setText(String.valueOf(kapacita));
     }
 
+    /**
+     * Funkcia ktora vymaze trasu vozika
+     */
+    public void deletePath(){
+        for (Shape trasa : cesta_voziku){
+            content.getChildren().remove(trasa);
+        }
+        cesta_voziku.removeAll(cesta_voziku);
+    }
+
+    /**
+     * Funkcia ktora zobrazi cestu voziku
+     * @param cesta List<Shape> zoznam tras kade pojde vozik
+     */
+    public void showPath(List<Shape> cesta){
+        deletePath();
+        cesta_voziku.addAll(cesta);
+        content.getChildren().addAll(cesta);
+    }
+
+    /**
+     * Funkcia, ktora nastavuje pocet vozikov v sklade
+     * @param pocet Integer pocet vozikov v sklade
+     */
     public void setPocet_vozikov(Integer pocet){
         voziky.setText(String.valueOf(pocet));
     }
@@ -212,6 +237,18 @@ public class MainController {
     {
         deleteLine();
     }
+
+
+    /**
+     * Funkcia, ktora je aktivovana po stlaceni tlacitka v gui,
+     * jej ulohou je vymazat zobrazane cesty vozika
+     */
+    @FXML
+    private void clear_path_car()
+    {
+        deletePath();
+    }
+
 
     /**
      * Funkcia

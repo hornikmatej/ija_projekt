@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ija.MainController">
    <center>
       <ScrollPane onScroll="#onZoom" pannable="true" prefHeight="600.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <content>
@@ -56,7 +56,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button layoutX="76.0" layoutY="195.0" mnemonicParsing="false" onAction="#clear_left_side" text="Clear Left Side" />
+            <Button layoutX="21.0" layoutY="195.0" mnemonicParsing="false" onAction="#clear_left_side" text="Vymaz udaje" />
             <TableView fx:id="skladtable" layoutX="2.0" layoutY="304.0" prefHeight="295.0" prefWidth="241.0">
               <columns>
                 <TableColumn fx:id="nazov" editable="false" prefWidth="183.0" text="Nazov" />
@@ -69,6 +69,7 @@
                </font>
             </TextField>
             <Button layoutX="71.0" layoutY="266.0" mnemonicParsing="false" onAction="#onRequest" text="Zadať požiadavku" />
+            <Button layoutX="126.0" layoutY="195.0" mnemonicParsing="false" onAction="#clear_path_car" text="Vymaz cestu" />
          </children></AnchorPane>
    </right>
    <left>
